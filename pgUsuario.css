@@ -1,0 +1,390 @@
+:root {
+  --cor0: #0732f1;
+  --cor1: #004f90;
+  --cor2: #4693ce;
+  --cor3: #4ba6e2;
+  --cor4: #ebf6ff;
+  --cor5: #000219;
+}
+
+body{
+  overflow-x: hidden;
+}
+
+header .cabecalhoInferior .d-flex .loginButton {
+  margin-left: -20%;
+  margin-right: 20%;
+  border-radius: 50%;
+}
+
+/*---------------------Referente a aparecer os elementos no carrinho de favoritos-------------*/
+header{
+    width: 100% !important;
+}
+
+.dropdown-menu {
+  width: 200px !important;
+}
+
+.dropdown-item {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  transition: 0.25s;
+  padding: 1% !important;
+}
+
+.produtosNoHeader {
+  border-bottom: 1px solid black;
+}
+
+.dropdown-item:hover {
+  transition: 0.25s;
+  background-color: yellow;
+}
+
+.dropdown-item:hover img {
+  transition: 0.25s;
+  transform: scale(1.1);
+}
+
+.dropdown-item:active {
+  transition: 0.25s;
+  transform: scale(1.06);
+  background-color: yellow;
+  color: black !important;
+}
+
+.dropdown-menu .d-flex {
+  height: 85px;
+  width: 100%;
+}
+
+.dropdown-item img {
+  height: 90%;
+  width: 85px !important;
+}
+
+.dropdown-item div {
+  width: 64% !important;
+  height: 100%;
+  white-space: wrap !important;
+}
+
+/*---------------------Referente a aparecer os elementos no carrinho de favoritos-------------*/
+
+main {
+  width: 100%;
+  padding: 3% 7%;
+}
+
+main h1 {
+  width: 24%;
+  border-bottom: 2px solid black;
+}
+
+main .containerDasInfoIniciais {
+  position: relative;
+  display: flex;
+  padding: 0.5% 2%;
+  height: 250px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+main .containerDasInfoIniciais img {
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.25s;
+  border: 4px solid black;
+  padding: 0%;
+}
+
+main .containerDasInfoIniciais img:hover {
+  transform: scale(1.07);
+  transition: 0.25s;
+  border-color: #004f90;
+}
+
+.containerDasInfoIniciais .infoUsuario {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 35%;
+  width: 700px; /*Alterar para responsividade*/
+}
+
+.containerDasInfoIniciais  h3{
+  word-break: break-word;
+  position: absolute;
+  top: 40%;
+}
+
+.containerDasInfoIniciais  h5{
+  word-break: break-word;
+  position: absolute;
+  top: 60%;
+}
+
+main .containerDasInfoIniciais a {
+  position: absolute;
+  right: 2%;
+  margin-top: 8%;
+  font-size: 0.75rem;
+  transition: 0.25s;
+  transform: scale(0.8);
+}
+
+main .containerDasInfoIniciais a:hover {
+  transform: scale(0.9);
+  transition: 0.25s;
+}
+
+main .containerDasInfoIniciais .editar {
+  display: flex;
+  align-items: center !important;
+  width: 100px;
+  height: 40px;
+  cursor: pointer;
+  transition: 0.25s;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 2%;
+  padding: 1%;
+  background-color: var(--cor0);
+  border-radius: 10px;
+}
+main .containerDasInfoIniciais .editar img {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 0;
+  transform: rotate(-10deg);
+  filter: invert(1);
+  left: 10%;
+}
+
+.editar p {
+  left: 40%;
+  bottom: -20%;
+  position: absolute;
+  font-size: 1.1rem;
+  color: white;
+}
+
+.editar:hover {
+  transform: scale(1.03);
+  transition: 0.25s;
+}
+
+main h2{
+  position: relative;
+  top: 5vh;
+  width: 28%;
+  /* margin-top: 10%; */
+  border-bottom: 2px solid black;
+}
+
+.containerCards{
+  position: relative;
+  top: 10vh;
+}
+
+.page-link{
+  position: relative;
+  top: 15vh;
+}
+
+footer{
+  position: relative !important;
+  top: 20vh !important;
+}
+
+/*-------------------------------Modal-----------------------------*/
+.modal-body form #loginBotao {
+  transition: 0.25s;
+  margin-top: 10%;
+}
+/*-------------------------------Modal-----------------------------*/
+
+/*---------------------------------------------------Responsividade-----------------------------------------*/
+
+/*--------------------------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------------------------*/
+
+@media (min-width: 280px) and (max-width: 460px) {
+ .dropdown-menu {
+    width: 200px !important;
+  }
+
+  .dropdown-item {
+    padding: 1% !important;
+  }
+
+  .produtosNoHeader {
+    margin: 2.5% 0%;
+  }
+
+  .dropdown-menu .d-flex {
+    height: 85px;
+    width: 100%;
+  }
+
+  .dropdown-menu .d-flex {
+    height: 65px;
+  }
+
+  .dropdown-menu .d-flex h6 {
+    font-size: 0.9rem;
+  }
+
+  .dropdown-item img {
+    height: 90% !important;
+    width: 60px !important;
+  }
+
+  .dropdown-item div {
+    width: 64% !important;
+    height: 100%;
+    white-space: wrap !important;
+  }
+
+  /*---------------------Referente a aparecer os elementos no carrinho de favoritos-------------*/
+
+  
+  main {
+    width: 100%;
+    padding: 3% 7%;
+  }
+
+  main h1 {
+    font-size: 3.3rem;
+    width: 70%;
+    border-bottom: 2px solid black;
+    margin-top: 5%;
+  }
+
+  main .containerDasInfoIniciais {
+    position: relative;
+    display: flex;
+    padding: 0.5% 2%;
+    height: 250px;
+    width: 50vw;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  main .containerDasInfoIniciais img {
+    width: 160px;
+    height: 160px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.25s;
+    border: 4px solid black;
+    padding: 0%;
+    position: absolute;
+    top: 10%;
+    left: 35%;
+  }
+
+  main .containerDasInfoIniciais img:hover {
+    transform: scale(1.07);
+    transition: 0.25s;
+    border-color: #004f90;
+  }
+
+  .containerDasInfoIniciais .d-flex .textos {
+    /* word-break: break-word !important; */
+    max-width: 300px;
+    position: relative;
+    top: 30vh;
+    left: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw !important; /*Alterar para responsividade*/
+  }
+
+  .containerDasInfoIniciais .d-flex h5{
+    margin-top: 20%;
+  }
+
+
+
+  main .containerDasInfoIniciais .btn {
+    margin-top: 15%;
+    margin-right: -100% !important;
+    font-size: 0.65rem;
+    transition: 0.25s;
+    transform: scale(0.8);
+  }
+
+  main .containerDasInfoIniciais a:hover {
+    transform: scale(0.9);
+    transition: 0.25s;
+  }
+
+  main .containerDasInfoIniciais .editar {
+    width: 70px;
+    font-size: 0.6rem !important;
+    height: 26px;
+    top: 80%;
+    right: 10%;
+    margin: 2%;
+    padding: 1%;
+  }
+  main .containerDasInfoIniciais .editar img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .editar p {
+    left: 40%;
+    bottom: -44%;
+    font-size: 0.8rem;
+  }
+
+  .editar:hover {
+    transform: scale(1.03);
+    transition: 0.25s;
+  }
+  
+  main h2{
+    position: relative;
+    top: 35vh;
+    width: 80%;
+    font-size: 1.3rem;
+    flex-wrap: nowrap !important;
+  }
+
+  .containerCards{
+    position: relative;
+    top: 45vh;
+  }
+  
+  .page-link{
+    position: relative;
+    top: 45vh;
+  }
+
+  footer{
+    position: relative;
+    top: 50vh !important;
+  }
+
+  /*-------------------------------Modal-----------------------------*/
+  .modal-body form #loginBotao {
+    transition: 0.25s;
+    margin-top: 10%;
+  }
+  /*-------------------------------Modal-----------------------------*/
+}
+

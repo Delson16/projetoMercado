@@ -1,0 +1,175 @@
+:root {
+    --cor0: #0732f1;
+    --cor1: #004F90;
+    --cor2: #4693ce;
+    --cor3: #4ba6e2;
+    --cor4: #ebf6ff;
+    --cor5: #000219;
+    --cor6: #FFBE00;
+    --cor7: #222222; 
+    
+}
+/*------------------------------------------Formatacoes globais------------------------------------*/
+article{
+    margin: 7% 7%;
+}
+
+/*-----------------------------------------------Carrossel Principal--------------------------------------*/
+
+
+#carouselExampleInterval img{
+    height: 50vh;
+    width: 100%;
+}
+
+/*---------------------------------------------Categorias-------------------------------------------------*/
+
+.subtitulo{
+margin: 0% 0% 3% 0%;
+display: flex;
+width: 100%;
+justify-content: space-between;
+align-items: center;
+height: 10vh;
+}
+
+.subtitulo h2{
+color: var(--cor7);
+border-bottom: 2px solid var(--cor7);
+padding-bottom: 1.5%;
+}
+
+.subtitulo button{
+background-color: var(--cor1);
+transition: 0.30s;
+border-radius: 50%;
+border: solid 0px;
+}
+
+.subtitulo button:hover{
+    background-color: var(--cor0);
+    transition: 0.30s;
+}
+
+
+.subtitulo .seta{
+    width: 50px;
+    height: 50px;
+    filter: invert(1);
+    padding: 20% 0%;
+}
+
+.subtitulo .setaEsquerda{
+    rotate: 180deg;
+}
+
+#carouselExampleInterval2 .carousel-item div{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: 20vh;
+}
+
+#carouselExampleInterval2 button{
+height: 100%;
+display: flex;
+align-items: center;
+margin: 0% 1.8%;
+}
+
+#carouselExampleInterval2 a{
+padding: 0.5% 0%;
+height: 100%;
+text-decoration: none;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+
+#carouselExampleInterval2 a svg{
+width: 100%;
+margin-bottom: 20%;
+}
+
+#carouselExampleInterval2 a h4{
+    all: unset;
+    font-size: 1.5rem;
+    color: var(--cor7);
+}
+
+/*---------------------------------------Lojas recomendadas-------------------------------*/
+.lojasRecomendadas .containerImagemTexto{
+display: flex;
+justify-content: space-between;
+}
+
+.lojasRecomendadas .containerImagemTexto div h2{
+margin: 5% 0%;
+}
+
+.lojasRecomendadas .containerImagemTexto img{
+height: 300px;
+width: 450px;
+cursor: pointer;
+}
+
+.lojasRecomendadas .distancia p{
+all: unset;
+font-size: 1.4rem;
+font-weight: 400;
+color: var(--cor0);
+}
+
+.lojasRecomendadas .distancia{
+    display: flex;
+    align-items: end;
+    height: 10%;
+    gap: 2%;
+}
+
+.lojasRecomendadas .distancia svg{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/*--------------------------------------banner-----------------------------*/
+.banner{
+    margin: 7% 0%;
+    width: 100%;
+    height: 50vh;
+}
+
+.banner img{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/*----------------------------------------Produtos mais buscados-----------------------*/
+.produtosBuscados .subtitulo{
+all: unset;
+display: flex;
+gap: 0% 3%;
+}
+
+.produtosBuscados .subtitulo a{
+text-decoration: none;
+border: 1px solid var(--cor7);
+color: var(--cor7);
+border-radius: 32px;
+height: 10%;
+padding: 0.5% 1%;
+transition: 0.25s;
+}
+
+.produtosBuscados .subtitulo a:hover{
+transition: 0.25s;
+transform: scale(1.05);
+border-color: var(--cor0);
+color: var(--cor0);
+}
+

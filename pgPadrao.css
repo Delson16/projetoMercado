@@ -1,0 +1,1464 @@
+@charset "utf8";
+
+* {
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+    font-family: inter;
+}
+
+:root {
+    --cor0: #0732f1;
+    --cor1: #004F90;
+    --cor2: #4693ce;
+    --cor3: #4ba6e2;
+    --cor4: #ebf6ff;
+    --cor5: #000219;
+    --cor6: #FFBE00;
+    --cor7: #222222; 
+    
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+header .loginButton{
+    border-radius: 50%;
+    height: 40px;
+}
+
+body {
+    width: 100%;
+    background-color: white;
+}
+
+
+
+iframe {
+    display: none;
+}
+
+/*      SVGS
+SVG Calendario: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16"> <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg>
+
+*/
+
+/*---------------------------------Formatações Globais---------------------------------*/
+
+/*---------------------------Header----------------------------*/
+header {
+    position: fixed;
+    top: 0;
+    background-color: var(--cor1);
+    font-family: inter;
+    z-index: 11;
+    width: 100%;
+}
+
+header .cabecalhoSuperior {
+    border-bottom: 1px solid var(--cor6);
+    padding: 0.3% 7%;
+}
+
+header .loginButton{
+    border-radius: 50%;
+}
+
+header .cabecalhoSuperior .d-flex {
+    display: flex;
+    align-items: center !important;
+}
+
+header .cabecalhoSuperior div a {
+    text-decoration: none;
+    color: var(--cor4);
+    transition: 0.25s;
+}
+
+header .cabecalhoSuperior div a:hover {
+    transition: 0.25s;
+    transform: scale(1.05);
+    color: var(--cor6);
+}
+
+header .cabecalhoSuperior div h9 {
+    margin: 0% 2%;
+    color: var(--cor6);
+    cursor: default;
+}
+
+header .cabecalhoInferior {
+    padding: 0.9% 7%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+header .cabecalhoInferior img {
+    width: 40px;
+}
+
+header .cabecalhoInferior .d-flex {
+    margin: 0;
+}
+
+header .cabecalhoInferior .pesquisaCentral {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--cor4);
+    border-radius: 12px;
+    overflow: hidden;
+    height: 40px;
+    width: 40%;
+}
+
+.pesquisaCentral input {
+    border: none;
+    width: 100%;
+    padding: 3% 1.5% 3% 3%;
+}
+
+.pesquisaCentral input:focus {
+    outline: none;
+}
+
+.pesquisaCentral button {
+    border: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2%;
+}
+
+.pesquisaCentral button img {
+    width: 25px;
+    transition: 0.25s;
+}
+
+.pesquisaCentral button img:hover {
+    transform: scale(1.15);
+    transition: 0.25s;
+}
+.cabecalhoInferior .d-flex{
+    gap: 20px;
+}
+
+.cabecalhoInferior .d-flex img {
+    cursor: pointer;
+}
+
+.d-flex .dropdown .naoClicado {
+    background-image: url(img/img\ pg\ padrao/heart2Protótipo.png);
+    background-size: contain;
+    width: 40px;
+    height: 39px;
+    background-position: 50%;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.d-flex .dropdown .naoClicado:hover {
+    background-image: url(img/img\ pg\ padrao/coracaoBranco.png);
+    transition: 0.25s;
+    transform: scale(1.12);
+}
+
+.d-flex .dropdown .naoClicado:active {
+    transition: 0.25s;
+    transform: scale(1.26);
+}
+
+.d-flex .dropdown .clicado {
+    background-image: url(img/img\ pg\ padrao/coracaoBranco.png);
+    background-size: contain;
+    width: 40px;
+    height: 39px;
+    background-position: 50%;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+
+/*---------------------------Header----------------------------*/
+
+
+
+/*-----------------------------------------MODAL-----------------------------------------------*/
+
+.modal-content,
+.modal-content a,
+.modal-header h1 {
+    color: var(--cor1);
+    font-weight: 600;
+}
+
+.modal-content {
+    padding: 3%;
+}
+
+.modal-header,
+.modal-footer {
+    border: 0px solid black;
+}
+
+.modal-header {
+    margin-bottom: -5% !important;
+}
+
+.modal-header h1 {
+    font-size: 1.65rem !important;
+}
+
+.modal-header .btn-close {
+    font-size: 1.35rem !important;
+}
+
+
+.modal-body div {
+    display: flex;
+    justify-content: center;
+}
+
+.modal-body .imagensLoginCadastro {
+    display: flex;
+    justify-content: center;
+    gap: 10%;
+}
+
+.modal-body .imagensLoginCadastro img {
+    width: 15%;
+    height: 15%;
+}
+
+.modal-body form label {
+    margin-top: 7%;
+}
+
+.modal-body form input {
+    padding: 1.7% 1%;
+    font-size: 1.3rem;
+    border: 1px solid rgb(148, 148, 148);
+    border-radius: 3px;
+    width: 100%;
+}
+
+.modal-body form div {
+    position: relative;
+}
+
+.modal-body form .mb-3 {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body form #selecionaImagem {
+    position: relative;
+    margin: 10% 0%;
+}
+
+.modal-body form #selecionaImagem input {
+    z-index: 15;
+    display: none;
+}
+
+.modal-body form #selecionaImagem img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.25s;
+    border: 1px solid black;
+    position: absolute;
+    left: 40%;
+}
+
+.modal-body form #selecionaImagem img:hover {
+    transition: 0.25s;
+    transform: scale(1.03);
+    border: 1px solid var(--cor1);
+}
+
+.modal-body form .olho {
+    width: 8%;
+    cursor: pointer;
+    bottom: 13%;
+    right: 4%;
+    position: absolute;
+}
+
+
+.modal-body form a {
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.modal-body form #loginBotao:hover {
+    transition: 0.25s;
+    transform: scale(1.02);
+
+}
+
+.modal-body form #loginBotao input {
+    background-color: var(--cor1);
+    font-size: 1.5rem;
+    padding: 1.2% 14%;
+    border-radius: 7px;
+    border: 0 solid black;
+    color: white;
+    position: relative;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.modal-footer button {
+    border: 0px solid black;
+    color: var(--cor1);
+    text-decoration: dotted !important;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/*-----------------------------------------MODAL-----------------------------------------------*/
+
+/*-----------------------------------------------CARDS----------------------------------------*/
+
+.containerCards {
+    padding: 3% 7%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10% 4%;
+}
+
+.containerCards .card {
+    text-decoration: none;
+    height: 300px;
+    cursor: pointer;
+    transition: 0.25s;
+    border: none;
+    margin: 4% 0%;
+}
+
+.containerCards .card:hover {
+    transform: scale(1.01);
+    transition: 0.25s;
+}
+
+.card .parteSuperiorCard {
+    height: 55%;
+    width: 100%;
+}
+
+.parteSuperiorCard img {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+}
+
+.parteSuperiorCard svg {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 5%;
+    z-index: 9 !important;
+}
+
+.favoritaCoracao {
+    cursor: pointer;
+    z-index: 9 !important;
+    width: 10%;
+    height: 10%;
+    transition: 0.25s;
+}
+
+.favoritaCoracao:hover {
+    transform: scale(1.25);
+    transition: 0.25s;
+}
+
+#favoritar {
+    z-index: 20 !important;
+}
+
+.coracaoFavoritado {
+    z-index: 9 !important;
+    animation: pulsa 0.6s ease-in-out;
+}
+
+.parteInferiorCard {
+    width: 100%;
+}
+
+.parteInferiorCard h4,
+.parteInferiorCard h6 {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.parteInferiorCard h4 {
+    font-weight: 550;
+}
+
+.parteInferiorCard .btn-p4 {
+    position: absolute;
+    bottom: 0;
+}
+
+/*-----------------------------------------------CARDS----------------------------------------*/
+
+/* -----------------------------------Formatação dos Botões Padrão------------------------- */
+
+.btn-p1 {
+    background-color: #4693ce;
+    color: #ebf6ff;
+    border: none;
+    padding: 0.5rem;
+    width: 20rem;
+    border-radius: 3px;
+    box-shadow: 3px 3px 1px #2d7aad;
+    text-decoration: none;
+}
+
+.btn-p1:hover {
+    transform: translatey(3px);
+    box-shadow: none;
+    transition: 0.1s;
+}
+
+.btn-p2 {
+    background-color: #4693ce;
+    color: #ebf6ff;
+    border: none;
+    padding: 0.4rem;
+    width: 13rem;
+    border-radius: 15px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn-p2:hover {
+    transform: translatey(-3px);
+    transition: 0.3s;
+    filter: none;
+}
+
+.btn-p3 {
+    background-color: var(--cor4);
+    color: var(--cor2);
+    border: none;
+    padding: 0.2rem;
+    width: 9.5rem;
+    border-radius: 20px;
+    font-weight: 500;
+    border: var(--cor2) 0.13rem solid;
+    text-decoration: none;
+}
+
+.btn-p3:hover {
+    color: var(--cor4);
+    background-color: var(--cor2);
+    transition: 0.3s;
+}
+
+.btn-p4 {
+    text-decoration: none;
+    color: white;
+    background-color: var(--cor2);
+    width: 100%;
+    text-align: center;
+    border-radius: 3px;
+    padding: 2% 0%;
+    transition: 0.25s;
+}
+
+/*-----------------------------------Formatação dos Botões Padrão------------------------- */
+
+
+/*----------------------------------------COMEÇO DO CONTEÚDO-----------------------------*/
+
+main {
+    margin-top: 5.5% !important;
+}
+
+/*---------------------------Footer----------------------------*/
+/* Footer */
+footer {
+    width: 100%;
+}
+
+.footerInferior {
+    display: flex;
+    flex-direction: column;
+    padding: 7% 7% 3% 7%;
+    background-color: var(--cor1);
+    width: 100%;
+}
+
+.linksPaginasFooter {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.linksPaginasFooter div {
+    display: flex;
+    flex-direction: column;
+}
+
+.linksPaginasFooter div a {
+    color: var(--cor4);
+    text-decoration: none;
+    margin: 2% 0%;
+    transition: 0.25s;
+}
+
+.linksPaginasFooter h5 {
+    color: var(--cor6);
+}
+
+.linksPaginasFooter div a:hover {
+    transform: scale(1.1);
+    transition: 0.25s;
+    color: var(--cor2);
+}
+
+
+.footerInferior #redesSociais {
+    display: flex !important;
+    flex-direction: row;
+}
+
+.footerInferior #redesSociais svg {
+    width: 50px !important;
+    margin-right: 5%;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.footerInferior #redesSociais svg:hover {
+    transform: scale(1.1);
+    transition: 0.25s;
+}
+
+.footerInferior #redesSociais svg {
+    width: 20px;
+    cursor: pointer;
+}
+
+.footerInferior .logo {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border-top: 1px solid white;
+    padding: 4% 0%;
+}
+
+.frasesFinaisFooter,
+.frasesFinaisFooter a {
+    display: flex;
+    text-decoration: none;
+    color: var(--cor4);
+    justify-content: space-between;
+    transition: 0.25s;
+}
+
+.frasesFinaisFooter a:hover {
+    transform: scale(1.1);
+    transition: 0.25s;
+    color: var(--cor2);
+}
+
+/*---------------------------Footer----------------------------*/
+
+
+
+
+/*--------------------------Animação----------------------------*/
+
+@keyframes pulsa {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.22);
+    }
+}
+
+/*--------------------------Animação----------------------------*/
+
+
+
+
+/*---------------------------------------------------Responsividade-----------------------------------------*/
+
+
+
+@media (min-width: 300px) and (max-width: 350px) {
+
+    /*---------------------------Header----------------------------*/
+
+    header .cabecalhoSuperior {
+        padding: 1.2% 7%;
+    }
+
+    header .cabecalhoSuperior div a {
+        font-size: 0.8rem;
+    }
+
+    header .cabecalhoSuperior div h9 {
+        font-size: 0.8rem;
+        margin: 0% 4%;
+    }
+
+    header .cabecalhoInferior {
+        padding: 3% 7%;
+    }
+
+    header .cabecalhoInferior img {
+        width: 30px;
+        height: 30px;
+    }
+
+    header .cabecalhoInferior .pesquisaCentral {
+        height: 30px;
+        width: 55%;
+        margin-left: -5%;
+    }
+
+    .pesquisaCentral input {
+        padding: 5% 2.5% 5% 5%;
+    }
+
+    .pesquisaCentral button img {
+        width: 26px;
+        height: 26px;
+    }
+
+    header .loginButton{
+        margin-left: -20%;
+        margin-right: 20%;
+        border-radius: 50% !important;
+    }
+
+    .d-flex .dropdown .naoClicado {
+        width: 30px;
+        height: 29px;
+    }
+
+    .d-flex .dropdown .clicado {
+        width: 30px;
+        height: 29px;
+    }
+
+
+    /*---------------------------Header----------------------------*/
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+    .containerCards {
+        padding: 3% 7%;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0% 8%;
+    }
+
+    .containerCards .card {
+        height: 240px;
+        margin: 10% 0%;
+    }
+
+    .containerCards .card:hover {
+        transform: scale(1);
+    }
+
+    .parteSuperiorCard svg {
+        position: absolute;
+        right: 0;
+        margin: 5%;
+        width: 15%;
+    }
+
+    .parteInferiorCard h4,
+    .parteInferiorCard h6 {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .parteInferiorCard h6 {
+        font-size: 0.9rem;
+    }
+
+    .parteInferiorCard h4 {
+        font-weight: 550;
+        font-size: 1.1rem;
+    }
+
+    .parteInferiorCard .btn-p4 {
+        position: absolute;
+        bottom: 0;
+        font-size: 0.85rem;
+    }
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+
+
+    /*----------------------------------------COMEÇO DO CONTEÚDO-----------------------------*/
+    main {
+        position: relative;
+        top: 70px !important;
+    }
+
+    /*---------------------------Footer----------------------------*/
+
+    .footerInferior {
+        padding: 0% 7% 3% 7% !important;
+    }
+
+    .linksPaginasFooter {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .linksPaginasFooter div {
+        margin: 10% 0%;
+    }
+
+    .linksPaginasFooter div h5 {
+        font-weight: 800;
+    }
+
+    .linksPaginasFooter div h5,
+    .linksPaginasFooter div a {
+        font-size: 0.8rem;
+    }
+
+
+    .footerInferior #redesSociais img {
+        width: 40px !important;
+        margin-right: 10%;
+        margin-top: -8%;
+    }
+
+    .footerInferior .logo img {
+        display: none;
+    }
+
+    .frasesFinaisFooter,
+    .frasesFinaisFooter a {
+        font-size: 0.5rem;
+    }
+
+
+    /*---------------------------Footer----------------------------*/
+}
+
+/*--------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+/*--------------------------------------------------------------------------------*/
+
+@media (min-width: 351px) and (max-width: 400px) {
+    /*---------------------------Header----------------------------*/
+
+    header .cabecalhoSuperior {
+        padding: 1.2% 7%;
+    }
+
+    header .cabecalhoSuperior div a {
+        font-size: 0.8rem;
+    }
+
+    header .cabecalhoSuperior div h9 {
+        font-size: 0.8rem;
+        margin: 0% 4%;
+    }
+
+    header .cabecalhoInferior {
+        padding: 3% 7%;
+    }
+
+    header .cabecalhoInferior img {
+        width: 30px;
+        height: 30px;
+    }
+
+    header .cabecalhoInferior .pesquisaCentral {
+        height: 30px;
+        width: 55%;
+        margin-left: -5%;
+    }
+
+    .pesquisaCentral input {
+        padding: 5% 2.5% 5% 5%;
+    }
+
+    .pesquisaCentral button img {
+        width: 26px;
+        height: 26px;
+    }
+
+    header .cabecalhoInferior .d-flex .loginButton {
+        margin-left: -20%;
+        margin-right: 20%;
+    }
+
+    .d-flex .dropdown .naoClicado {
+        width: 30px;
+        height: 29px;
+    }
+
+    .d-flex .dropdown .clicado {
+        width: 30px;
+        height: 29px;
+    }
+
+
+    /*---------------------------Header----------------------------*/
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+    .containerCards {
+        padding: 7% 7%;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0% 8%;
+    }
+
+    .containerCards .card {
+        height: 240px;
+        margin: 8% 0%;
+    }
+
+    .containerCards .card:hover {
+        transform: scale(1);
+    }
+
+    .parteSuperiorCard svg {
+        position: absolute;
+        right: 0;
+        margin: 5%;
+        width: 15%;
+    }
+
+    .parteInferiorCard h4,
+    .parteInferiorCard h6 {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .parteInferiorCard h6 {
+        font-size: 0.9rem;
+    }
+
+    .parteInferiorCard h4 {
+        font-weight: 550;
+        font-size: 1.1rem;
+    }
+
+    .parteInferiorCard .btn-p4 {
+        position: absolute;
+        bottom: 0;
+        font-size: 0.85rem;
+    }
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+
+
+    /*----------------------------------------COMEÇO DO CONTEÚDO-----------------------------*/
+    main {
+        position: relative;
+        top: 80px !important;
+    }
+
+    /*---------------------------Footer----------------------------*/
+
+    .footerInferior {
+        padding: 0% 7% 3% 7% !important;
+    }
+
+    .linksPaginasFooter {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .linksPaginasFooter div {
+        margin: 10% 0%;
+    }
+
+    .linksPaginasFooter div h5 {
+        font-weight: 800;
+    }
+
+    .linksPaginasFooter div h5,
+    .linksPaginasFooter div a {
+        font-size: 0.8rem;
+    }
+
+
+    .footerInferior #redesSociais img {
+        width: 40px !important;
+        margin-right: 10%;
+        margin-top: -8%;
+    }
+
+    .footerInferior .logo img {
+        display: none;
+    }
+
+    .frasesFinaisFooter,
+    .frasesFinaisFooter a {
+        font-size: 0.5rem;
+    }
+
+
+    /*---------------------------Footer----------------------------*/
+}
+
+
+
+
+
+
+
+
+
+
+
+/*--------------------------------------------------------------------------------*/
+@media (min-width: 401px) and (max-width: 520px) {
+    /*---------------------------Header----------------------------*/
+
+    header .cabecalhoSuperior {
+        padding: 1.2% 7%;
+    }
+
+    header .cabecalhoSuperior div a {
+        font-size: 0.9rem;
+    }
+
+    header .cabecalhoSuperior div h9 {
+        font-size: 0.9rem;
+        margin: 0% 5%;
+    }
+
+    header .cabecalhoInferior {
+        padding: 3% 7%;
+    }
+
+    header .cabecalhoInferior img {
+        width: 35px;
+        height: 35px;
+    }
+
+    header .cabecalhoInferior .pesquisaCentral {
+        height: 35px;
+        width: 60%;
+        margin-left: -5%;
+    }
+
+    .pesquisaCentral input {
+        padding: 5% 2.5% 5% 5%;
+    }
+
+    .pesquisaCentral button img {
+        width: 26px;
+        height: 26px;
+    }
+
+    header .cabecalhoInferior .d-flex .loginButton {
+        margin-left: -20%;
+        margin-right: 20%;
+    }
+
+    .d-flex .dropdown .naoClicado {
+        width: 35px;
+        height: 33px;
+    }
+
+    .d-flex .dropdown .clicado {
+        width: 35px;
+        height: 34px;
+    }
+
+
+    /*---------------------------Header----------------------------*/
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+    .containerCards {
+        padding: 7% 7%;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0% 8%;
+    }
+
+    .containerCards .card {
+        height: 270px;
+        margin: 8% 0%;
+    }
+
+    .containerCards .card:hover {
+        transform: scale(1);
+    }
+
+    .parteSuperiorCard svg {
+        position: absolute;
+        right: 0;
+        margin: 6.5%;
+        width: 18%;
+    }
+
+    .parteInferiorCard h4,
+    .parteInferiorCard h6 {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .parteInferiorCard h6 {
+        font-size: 1rem;
+    }
+
+    .parteInferiorCard h4 {
+        font-weight: 550;
+        font-size: 1.2rem;
+    }
+
+    .parteInferiorCard .btn-p4 {
+        position: absolute;
+        bottom: 0;
+        font-size: 0.85rem;
+    }
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+
+
+    /*----------------------------------------COMEÇO DO CONTEÚDO-----------------------------*/
+    main {
+        position: relative;
+        top: 90px !important;
+    }
+
+    /*---------------------------Footer----------------------------*/
+    /*Parte para o Israel*/
+
+    .footerInferior {
+        padding: 0% 7% 3% 7% !important;
+    }
+
+    .linksPaginasFooter {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .linksPaginasFooter div {
+        margin: 10% 0%;
+    }
+
+    .linksPaginasFooter div h5 {
+        font-weight: 800;
+    }
+
+    .linksPaginasFooter div h5,
+    .linksPaginasFooter div a {
+        font-size: 0.9rem;
+    }
+
+
+    .footerInferior #redesSociais img {
+        width: 40px !important;
+        margin-right: 10%;
+        margin-top: -8%;
+    }
+
+    .footerInferior .logo img {
+        display: none;
+    }
+
+    .frasesFinaisFooter,
+    .frasesFinaisFooter a {
+        font-size: 0.7rem;
+    }
+
+
+    /*---------------------------Footer----------------------------*/
+}
+
+
+
+
+
+/*--------------------------------------------------------------------------------*/
+@media (min-width: 520px) and (max-width: 630px) {
+    /*---------------------------Header----------------------------*/
+
+    header .cabecalhoSuperior {
+        padding: 1.2% 7%;
+    }
+
+    header .cabecalhoSuperior div a {
+        font-size: 0.9rem;
+    }
+
+    header .cabecalhoSuperior div h9 {
+        font-size: 0.9rem;
+        margin: 0% 5%;
+    }
+
+    header .cabecalhoInferior {
+        padding: 3% 7%;
+    }
+
+    header .cabecalhoInferior img {
+        width: 35px;
+        height: 35px;
+    }
+
+    header .cabecalhoInferior .pesquisaCentral {
+        height: 35px;
+        width: 60%;
+        margin-left: -5%;
+    }
+
+    .pesquisaCentral input {
+        padding: 5% 2.5% 5% 5%;
+    }
+
+    .pesquisaCentral button img {
+        width: 26px;
+        height: 26px;
+    }
+
+    header .cabecalhoInferior .d-flex .loginButton {
+        margin-left: -20%;
+        margin-right: 20%;
+    }
+
+    .d-flex .dropdown .naoClicado {
+        width: 35px;
+        height: 33px;
+    }
+
+    .d-flex .dropdown .clicado {
+        width: 35px;
+        height: 34px;
+    }
+
+
+    /*---------------------------Header----------------------------*/
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+    .containerCards {
+        padding: 7% 7%;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0% 8%;
+    }
+
+    .containerCards .card {
+        height: 270px;
+        margin: 8% 0%;
+    }
+
+    .containerCards .card:hover {
+        transform: scale(1);
+    }
+
+    .parteSuperiorCard svg {
+        position: absolute;
+        right: 0;
+        margin: 6.5%;
+        width: 18%;
+    }
+
+    .parteInferiorCard h4,
+    .parteInferiorCard h6 {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .parteInferiorCard h6 {
+        font-size: 1rem;
+    }
+
+    .parteInferiorCard h4 {
+        font-weight: 550;
+        font-size: 1.2rem;
+    }
+
+    .parteInferiorCard .btn-p4 {
+        position: absolute;
+        bottom: 0;
+        font-size: 0.85rem;
+    }
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+
+
+    /*----------------------------------------COMEÇO DO CONTEÚDO-----------------------------*/
+    main {
+        position: relative;
+        top: 95px !important;
+    }
+
+    /*---------------------------Footer----------------------------*/
+    /*Parte para o Israel*/
+
+    .footerInferior {
+        padding: 0% 7% 3% 7% !important;
+    }
+
+    .linksPaginasFooter {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .linksPaginasFooter div {
+        margin: 10% 0%;
+    }
+
+    .linksPaginasFooter div h5 {
+        font-weight: 800;
+
+    }
+
+    .linksPaginasFooter div h5,
+    .linksPaginasFooter div a {
+        font-size: 0.9rem;
+    }
+
+
+    .footerInferior .redesSociais img {
+        width: 40px !important;
+        margin-right: 10%;
+        margin-top: -8%;
+    }
+
+    .footerInferior .logo img {
+        display: none;
+    }
+
+    .frasesFinaisFooter,
+    .frasesFinaisFooter a {
+        font-size: 0.7rem;
+
+    }
+
+
+    /*---------------------------Footer----------------------------*/
+}
+
+
+
+
+
+
+
+
+
+
+/*--------------------------------------------------------------------------------*/
+@media (min-width: 631px) and (max-width: 770px) {
+    /*---------------------------Header----------------------------*/
+
+    header .cabecalhoSuperior {
+        padding: 1.2% 7%;
+    }
+
+    header .cabecalhoSuperior div a {
+        font-size: 1rem;
+    }
+
+    header .cabecalhoSuperior div h9 {
+        font-size: 1rem;
+        margin: 0% 5%;
+    }
+
+    header .cabecalhoInferior {
+        padding: 3% 7%;
+    }
+
+    header .cabecalhoInferior img {
+        width: 42px;
+        height: 42px;
+    }
+
+    header .cabecalhoInferior .pesquisaCentral {
+        height: 42px;
+        width: 60%;
+        margin-left: -5%;
+    }
+
+    .pesquisaCentral input {
+        padding: 5% 2.5% 5% 5%;
+    }
+
+    .pesquisaCentral button img {
+        width: 32px;
+        height: 32px;
+    }
+
+    header .cabecalhoInferior .d-flex .loginButton {
+        margin-left: -20%;
+        margin-right: 20%;
+    }
+
+    .d-flex .dropdown .naoClicado {
+        width: 42px;
+        height: 38px;
+    }
+
+    .d-flex .dropdown .clicado {
+        width: 42px;
+        height: 42px;
+    }
+
+
+    /*---------------------------Header----------------------------*/
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+    .containerCards {
+        padding: 7% 7%;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0% 8%;
+    }
+
+    .containerCards .card {
+        height: 270px;
+        margin: 8% 0%;
+    }
+
+    .containerCards .card:hover {
+        transform: scale(1);
+    }
+
+    .parteSuperiorCard svg {
+        position: absolute;
+        right: 0;
+        margin: 6.5%;
+        width: 18%;
+    }
+
+    .parteInferiorCard h4,
+    .parteInferiorCard h6 {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .parteInferiorCard h6 {
+        font-size: 1rem;
+    }
+
+    .parteInferiorCard h4 {
+        font-weight: 550;
+        font-size: 1.2rem;
+    }
+
+    .parteInferiorCard .btn-p4 {
+        position: absolute;
+        bottom: 0;
+        font-size: 0.85rem;
+    }
+
+    /*-----------------------------------------------CARDS----------------------------------------*/
+
+
+
+    /*----------------------------------------COMEÇO DO CONTEÚDO-----------------------------*/
+    main {
+        position: relative;
+        top: 110px !important;
+    }
+
+    /*---------------------------Footer----------------------------*/
+    /*Parte para o Israel*/
+    /* lmao */
+
+    .footerInferior {
+        padding: 0% 7% 3% 7% !important;
+    }
+
+    .linksPaginasFooter {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .linksPaginasFooter div {
+        margin: 10% 0%;
+    }
+
+    .linksPaginasFooter div h5 {
+        font-weight: 800;
+    }
+
+    .linksPaginasFooter div h5,
+    .linksPaginasFooter div a {
+        font-size: 0.9rem;
+        color: var();
+    }
+
+
+    .footerInferior #redesSociais img {
+        width: 40px !important;
+        margin-right: 10%;
+        margin-top: -8%;
+    }
+
+    .footerInferior .logo img {
+        display: none;
+    }
+
+    .frasesFinaisFooter,
+    .frasesFinaisFooter a {
+        font-size: 0.7rem;
+    }
+
+
+    /*---------------------------Footer----------------------------*/
+}
+
+
+
+
+
+
+
+/*--------------------------------------------------------------------------------*/
+@media (min-height: 780px) and (max-height: 820px) {
+    /* Para que isso, bro */
+}
+
+
+
+
+
+
+
+/*--------------------------------------------------------------------------------*/
+@media (min-width: 760px) and (max-width: 799px) {
+    main {
+        position: relative;
+        top: 120px !important;
+    }
+}
+
+@media (min-width: 800px) and (max-width: 1000px) {
+    main {
+        position: relative;
+        top: 85px !important;
+    }
+}
+
+/*---------------------------------------------------Responsividade-----------------------------------------*/

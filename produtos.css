@@ -1,0 +1,226 @@
+:root {
+    --cor0: #0732f1;
+    --cor1: #004F90;
+    --cor2: #4693ce;
+    --cor3: #4ba6e2;
+    --cor4: #ebf6ff;
+    --cor5: #000219;
+    --cor6: #FFBE00;
+    --cor7: #222222; 
+}
+
+/*---------------------------------Conteudo principal------------------------*/
+main{
+    margin: 5% 7%;
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
+}
+
+.conteudoPrincipalSuperior{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 50vh;
+    gap: 0% 6%;
+}
+
+.galeria {
+    display: flex;
+    align-items: center;
+}
+
+
+.imagensLaterais {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0% 1%;
+    gap: 2%;
+}
+
+.imagensLaterais img {
+    width: 10vw;
+    height: 16.66vh;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.imagensLaterais img:hover {
+    transform: scale(1.04);
+    transition: 0.25s;
+}
+
+.informacoesProduto{
+    display: grid;
+    grid-template-columns: repeat(1, 4fr);
+}
+
+.informacoesProduto h1{
+    font-size: 2.8rem;
+    font-weight: 400;
+}
+.informacoesProduto p{
+    font-size: 1.4rem;
+    font-weight: 350;
+}
+
+.botoesInteresse{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;  
+}
+
+.galeria #imagemPrincipal {
+    width: 37.5vw;
+    height: 50vh;
+}
+
+.botoesInteresse a{
+    all: unset;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    background-color: var(--cor1);
+    color: white;
+    font-weight: 500;
+    font-size: 1.4rem;
+    padding: 1% 16%;
+    gap: 0% 10%;
+    cursor: pointer;
+    transition: 0.25s;
+    border-radius: 6px;
+}
+
+.botoesInteresse a:hover{
+    transition: 0.25s;
+    transform: scale(1.03);
+    background-color: var(--cor0);
+}
+
+.botoesInteresse a img{
+    height: 2.5vh;
+}
+.tituloInfo{
+    margin-top: 7%;
+}
+
+/*----------------------Info vendedor---------------------------*/
+.informacoesVendedor{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0% 7%;
+    height: 40vh;
+}
+
+.containerInfoVendedor div{
+    display: flex;
+}
+
+.borderBottom{
+    border-bottom: 1px solid black;
+    padding: 2.5% 0%;
+}
+
+
+.containerInfoVendedor div img{
+    border-radius: 50%;
+    width: 4vw;
+    height: 8vh;
+    margin-right: 1vw;
+}
+
+.containerInfoVendedor svg{
+    width: 12%;
+}
+
+.containerInfoVendedor div div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.containerInfoVendedor div a{
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+.containerInfoVendedor div a:hover{
+    transform: scale(1.04);
+    transition: 0.25s;
+}
+
+.whats{
+    border: 1px solid green;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 10%;
+    margin-top: 1.5%;
+    border-radius: 6px;
+    padding: 0.5% 2%;
+    width: 30%;
+}
+
+.containerInfoVendedor .whats svg{
+    height: 4vh;
+    width: 2vw;
+    margin-right: 5%;
+}
+
+.whats h5{
+    text-decoration: none;
+    color: green;
+    margin-top: 5%;
+    font-size: 1.45rem;
+}
+
+.mapa{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 5% 0%;
+    height: 76%;
+}
+
+.mapa img{
+    width: 82%;
+    height: 84%;
+    cursor: pointer;
+    transition: 0.25s;
+    border-radius: 6px;
+}
+
+.mapa img:hover{
+    transform: scale(1.02);
+    transition: 0.25s;
+}
+
+.mapa a{
+    text-decoration: none;
+    border: 1px solid var(--cor0);
+    padding: 0.5%;
+    width: 82%;
+    text-align: center;
+    font-size: 1.3rem;
+    transition: 0.25s;
+    border-radius: 6px;
+}
+
+.mapa a:hover{
+    background-color: var(--cor0);
+    color: white;
+    transition: 0.25s;
+    transform: scale(1.02);
+}
+
+/*-----------------------------------Produtos extras (voce pode gostar tambem)----------------------------------------*/
+article{
+    margin: 10% 7% 5% 7%;
+}
+
+article h2{
+    margin-bottom: 3%;
+}
+
+/*-----------------------------------Produtos extras (voce pode gostar tambem)----------------------------------------*/
