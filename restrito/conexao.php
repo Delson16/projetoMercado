@@ -1,18 +1,24 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "mercazon";
+function pegarConexao($tipoUsuario){
+    $servername = "localhost";
+    
+    if($tipoUsuario === 'usuario'){
+        $username = 'usuario';
+        $password = 'F7!vR$4x^Tp9@aJq';
+    } else if ($tipoUsuario === 'lojista'){
+        $username = 'lojista';
+        $password = '7$Lz*R@8e%wX!qGm';
+    }
+    $dbname = "mercazon";
 
-// Criando a conexão
-$conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-// validando a conexão
-if ($conn->connect_error) {
-    die("Falha na conexão: " . $conn->connect_error);
-} else {
-    // echo "Conexão bem-sucedida";
+    if($conn->connect_error){
+        return 0;
+    } else {
+        return $conn;
+    }
 }
 
 function clear($conexao, $texto){
@@ -20,7 +26,6 @@ function clear($conexao, $texto){
     $textoLimpo = htmlspecialchars($texto);
     return $textoLimpo;
 }
-
 
 // fução que valida e faz upload da imagem. 
 function salvarFoto($foto, $local){
@@ -47,6 +52,25 @@ function salvarFoto($foto, $local){
         return 0;
     }
 }
+
+/*
+
+USE mercazon;
+
+CREATE USER 'usuario'@'localhost' IDENTIFIED BY 'F7!vR$4x^Tp9@aJq';
+
+GRANT INSERT, UPDATE, DELETE, SELECT ON mercazon.usuarios TO 'usuario'@'localhost';
+GRANT INSERT, UPDATE, DELETE, SELECT ON mercazon.usuario_favorita_produto TO 'usuario'@'localhost';
+GRANT SELECT ON mercazon.produtos TO 'usuario'@'localhost';
+GRANT SELECT ON mercazon.lojistas TO 'usuario'@'localhost';
+
+CREATE USER 'lojista'@'localhost' IDENTIFIED BY '7$Lz*R@8e%wX!qGm';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON mercazon.produtos TO 'lojista'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON mercazon.lojistas TO 'lojista'@'localhost';
+
+FLUSH PRIVILEGES;
+*/
 
 
 
