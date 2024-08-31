@@ -1,348 +1,50 @@
-<?php
-include_once 'restrito/conexao.php';
-// include_once 'validarUsuario.php';
+<?php include_once "scripts.php";
 session_start();
-if (isset($_SESSION['idUser'])) {
-    $user = $_SESSION['idUser'];
-} else if (isset($_SESSION['idLojista'])) {
-    $user = $_SESSION['idLojista'];
-} else {
-    $user = " ";
-}
-$_SESSION['sql'];
-$_SESSION['sqlContadora'];
 ?>
-
-<?php
-
-// Configuração da paginação
-$num_items_por_pagina = 16; // Número de itens por página
-$pagina_atual = isset($_GET['pagina']) ? $_GET['pagina'] : 1; // Página atual, padrão é 1
-$offset = ($pagina_atual - 1) * $num_items_por_pagina; // Calcular o offset
-
-// Consulta SQL com LIMIT e OFFSET para implementar a paginação
-// $sql = "SELECT * FROM produtos WHERE id_lojista = $user LIMIT $offset, $num_items_por_pagina";
-// $result = $conn->query($sql);
-
-// função que compara a string de uma variavel com um argumento fornecido, se for true ela retorna checked, senão retorna uma string vazia. 
-function checarFiltro($dado, $argumento)
-{
-    if (isset($dado)) {
-        if ($dado == $argumento) {
-            return 'checked';
-        } else {
-            return ' ';
-        }
-    } else {
-        return ' ';
-    }
-}
-function checarOrdenm($dado, $argumento)
-{
-    if (isset($dado)) {
-        if ($dado == $argumento) {
-            return 'ordemMarcada';
-        } else {
-            return ' ';
-        }
-    } else {
-        return ' ';
-    }
-}
-
-$categoria = "";
-$marca = "";
-$genero = "";
-$cor = "";
-$precoMaior = 0;
-$precoMenor = 90000;
-$ordem = 'preco';
-$nome = isset($_POST['nome']) ? $_POST['nome'] : " ";
-
-if (isset($_POST['filtro'])) {
-    $precoMaior = isset($_POST['precoMaior']) ? $_POST['precoMaior'] : 0;
-    $precoMenor = isset($_POST['precoMenor']) ? $_POST['precoMenor'] : 90000;
-    $nome = $_POST['nome'];
-    $ordem = $_POST['filtro'];
-
-    $sql = "SELECT p.id, p.nome, p.preco, p.imagem, l.nome_estabelecimento
-                FROM produtos AS p JOIN lojistas as l ON p.id_lojista = l.id
-                WHERE ";
-    $sqlContadora = "SELECT COUNT(id) AS total FROM produtos AS p WHERE ";
-
-    if (isset($_POST['categoria']) && $_POST['categoria']) {
-        $categoria = $_POST['categoria'];
-        $sql .= "p.categoria = '$categoria' AND ";
-        $sqlContadora .= "p.categoria = '$categoria' AND ";
-    }
-    if (isset($_POST['marca']) && $_POST['marca']) {
-        $marca = $_POST['marca'];
-        $sql .= "p.marca like '%$marca%' AND ";
-        $sqlContadora .= "p.marca = '$marca' AND ";
-    }
-    if (isset($_POST['genero']) && $_POST['genero']) {
-        $genero = $_POST['genero'];
-        $sql .= "p.genero = '$genero' AND ";
-        $sqlContadora .= "p.genero = '$genero' AND ";
-    }
-    if (isset($_POST['cor']) && $_POST['cor']) {
-        $cor = $_POST['cor'];
-        $sql .= "p.cor = '$cor' AND ";
-        $sqlContadora .= "p.cor = '$cor' AND ";
-    }
-    $pesquisarNome = $nome ? "p.nome LIKE '%$nome%' AND" : "";
-    $sql = $sql . "$pesquisarNome p.preco BETWEEN $precoMaior AND $precoMenor ORDER BY $ordem LIMIT $offset, $num_items_por_pagina;";
-    $sqlContadora = $sqlContadora . "$pesquisarNome preco BETWEEN $precoMaior AND $precoMenor;";
-    $_SESSION['sql'] = $sql;
-    $_SESSION['sqlContadora'] = $sqlContadora;
-} else if (isset($_GET['categoria'])) {
-    $categoria = $_GET['categoria'];
-    $sql = "SELECT p.id, p.nome, p.preco, p.imagem, l.nome_estabelecimento FROM produtos AS p JOIN lojistas as l ON p.id_lojista = l.id WHERE categoria = '$categoria' ORDER BY 'contador_cliques' LIMIT $offset, $num_items_por_pagina;";
-    $sqlContadora = "SELECT COUNT(id) AS total FROM produtos WHERE categoria = '$categoria' ORDER BY 'contador_cliques' LIMIT $offset, $num_items_por_pagina;";
-    $_SESSION['sql'] = $sql;
-    $_SESSION['sqlContadora'] = $sqlContadora;
-}
-
-if (isset($_POST['removeFiltro'])) {
-
-    $categoria = "";
-    $marca = "";
-    $genero = "";
-    $cor = "";
-    $precoMaior = 0;
-    $precoMenor = 90000;
-    $ordem = 'preco';
-    $nome = $_POST['nome'];
-    $pesquisarNome = $nome ? "p.nome LIKE '%$nome%' AND" : "";
-
-    $sql = "SELECT p.id, p.nome, p.preco, p.imagem, l.nome_estabelecimento FROM produtos AS p JOIN lojistas as l ON p.id_lojista = l.id WHERE $pesquisarNome p.preco BETWEEN 0 AND 90000 ORDER BY preco LIMIT $offset, $num_items_por_pagina;";
-    $sqlContadora = "SELECT COUNT(id) AS total FROM produtos WHERE $pesquisarNome preco BETWEEN $precoMaior AND $precoMenor;";
-    $_SESSION['sql'] = $sql;
-    $_SESSION['sqlContadora'] = $sqlContadora;
-}
-?>
-
-<!--PHP Login e cadastro-->
-<?php
-// Código referente ao login do usuário
-if (isset($_POST['loginSubmit'])) {
-    include_once "restrito/conexao.php";
-
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $sql = "SELECT id, email, senha, nome FROM usuarios WHERE email = '$email'";
-    $resultado = $conn->query($sql);
-    $numLinha = mysqli_num_rows($resultado);
-
-    if ($numLinha > 0) {
-        $linha = mysqli_fetch_array($resultado);
-        $senha = mysqli_real_escape_string($conn, $_POST['senha']);
-
-        if (password_verify($senha, $linha['senha'])) {
-
-            session_start();
-            $_SESSION['idUser'] = $linha['id'];
-            $_SESSION['nome'] = $linha['nome'];
-            header('location: restrito/usuario.php');
-        } else {
-            echo "
-                    <script>
-            alert('senha ou email errados. Tente novamente!');
-                    </script>";
-        }
-    } else {
-        echo "<script>
-            alert('senha ou email errados. Tente novamente!');
-                    </script>";
-    }
-
-    $conn->close();
-}
-
-// código referente ao cadastro do usuário
-if (isset($_POST['cadastroSubmit'])) {
-
-    include_once "restrito/conexao.php";
-
-    $email = clear($conn, $_POST['email']);
-
-    $sql = "SELECT id FROM usuarios WHERE email = '$email'";
-    $resultado = mysqli_query($conn, $sql);
-    $numLinha = mysqli_num_rows($resultado);
-
-    if ($numLinha > 0) {
-        echo "<script>
-            alert('Este e-mail ja está em uso. Tente com outro');
-                    </script>";
-    } else {
-        $nome = clear($conn, $_POST['nome']);
-        $endereco = clear($conn, $_POST['endereco']);
-        $data = clear($conn, $_POST['data_nascimento']);
-        $senha = clear($conn, $_POST['senha']);
-        //para aumentar a segurança (criptografia) 
-        $senha = password_hash($senha, PASSWORD_DEFAULT);
-
-        $sql = "INSERT INTO usuarios (nome, email, endereco, data_nascimento, senha) VALUE ('$nome', '$email', '$endereco', '$data', '$senha')";
-
-        if ($conn->query($sql) === TRUE) {
-
-            $sql = "SELECT id, nome FROM usuarios WHERE email = '$email'";
-            $resultado = mysqli_query($conn, $sql);
-            $linha = mysqli_fetch_array($resultado);
-
-            session_start();
-            $_SESSION['idUser'] = $linha['id'];
-            $_SESSION['nome'] = $linha['nome'];
-            header('location: restrito/usuario.php');
-        } else {
-            echo "<script>
-            alert('Houve um problema no cadastro. Por favor, tente mais tarde.');
-                    </script>";
-        }
-    }
-    // fechar a conexão, ira abrir novamente quando outro usuário entrar
-    $conn->close();
-}
-
-// Código referente ao login do lojista
-if (isset($_POST['loginLojista'])) {
-
-    include_once "restrito/conexao.php";
-
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $sql = "SELECT id, senha, nome FROM lojistas WHERE email = '$email'";
-    $resultado = $conn->query($sql);
-    $numLinha = mysqli_num_rows($resultado);
-
-    if ($numLinha > 0) {
-        $linha = mysqli_fetch_array($resultado);
-        $senha = mysqli_real_escape_string($conn, $_POST['senha']);
-
-        if (password_verify($senha, $linha['senha'])) {
-
-            session_start();
-            $_SESSION['idLojista'] = $linha['id'];
-            $_SESSION['nome'] = $linha['nome'];
-            header('location: restrito/lojistaLojista.php');
-        } else {
-            echo "<script>
-            alert('senha ou email errados. Tente novamente!');
-                    </script>";
-        }
-    } else {
-        echo "<script>
-            alert('senha ou email errados. Tente novamente!');
-                </script>";
-    }
-
-    $conn->close();
-}
-
-// codigo referente ao cadastro do lojista
-if (isset($_POST['cadastroLojistaSubmit'])) {
-
-    include_once "restrito/conexao.php";
-    $email = clear($conn, $_POST['email']);
-
-    $sql = "SELECT id FROM lojistas WHERE email = '$email'";
-    $resultado = mysqli_query($conn, $sql);
-    $numLinha = mysqli_num_rows($resultado);
-
-    if ($numLinha > 0) {
-        echo "<p class='aviso'>Este e-mail ja está em uso.</p>";
-    } else {
-        $fotoUsuario = salvarFoto($_FILES['imagemUsuario'], "img/");
-
-        if ($fotoUsuario == 0) {
-            echo "<script>
-                    alert('Houve um erro no upload da imagem de usuário. Tente novamente mais tarde.');
-                    </script>";
-        } else if ($fotoUsuario == 1) {
-            echo "<script>
-                    alert('a imagem do lojista esta em um formato não aceito ou é muito grande.<br>Aceitamos arquivos nos seguintes formatos: JPEG, PNG ou SVG.<br>O tamanho limite para imagens é de 1.5mb');
-                    </script>";
-        } else {
-
-            $fotoEmpresa = salvarFoto($_FILES['imagemEmpresa'], "img/");
-
-            if ($fotoEmpresa == 0) {
-                echo "<script>
-                    alert('Houve um erro no upload da imagem da empresa. Tente novamente mais tarde.');
-                    </script>";
-            } else if ($fotoEmpresa == 1) {
-                echo "<script>
-                    alert('a imagem da empresa esta em um formato não aceito ou é muito grande.<br>Aceitamos arquivos nos seguintes formatos: JPEG, PNG ou SVG.<br>O tamanho limite para imagens é de 1.5mb');
-                    </script>";
-            } else {
-                $endereco = CLEAR($conn, $_POST['endereco']);
-                $senha = password_hash(CLEAR($conn, $_POST['senha']), PASSWORD_DEFAULT);
-                $telefone = CLEAR($conn, $_POST['telefone']);
-                $nome = CLEAR($conn, $_POST['nome']);
-                $nomeEstabelecimento = CLEAR($conn, $_POST['nomeEstabelecimento']);
-
-                $sql = "INSERT INTO lojistas (nome, nome_estabelecimento, endereco, email, senha, telefone, imagem_empresa, imagem_lojista) VALUES ('$nome', '$nomeEstabelecimento', '$endereco', '$email', '$senha', '$telefone', '$fotoEmpresa', '$fotoUsuario')";
-
-                if (mysqli_query($conn, $sql)) {
-
-                    $sql = "SELECT id, nome FROM lojistas WHERE email  = '$email'";
-
-                    $resultado = mysqli_query($conn, $sql);
-                    $linha = mysqli_fetch_array($resultado);
-
-                    session_start();
-                    $_SESSION['idLojista'] = $linha['id'];
-                    $_SESSION['nome'] = $linha['nome'];
-                    header('location: restrito/lojistaLojista.php');
-                } else {
-                    echo "<script>
-                                    alert('Houve um erro na realização do cadastro. Tente novamente mais tarde.');
-                                </script>";
-                }
-            }
-
-        }
-
-    }
-    $conn->close();
-}
-?>
-<!--PHP Login e cadastro-->
 
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-br"> 
 <head>
-    <link rel="shortcut icon" href="../img/img pg inicial/logoAmareloEscuro.png" type="image/x-icon">
-    <link rel="stylesheet" href="pgPadrao.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script>
+        // Este script ficou na parte superiro, pois precisa ser executado antes da construção da página.
+        // funções que mantém os campos ativos com base na url
+        function filtroAtivoRadio(valorInput) {
+            const inputAtivado = document.querySelector(`input[value='${valorInput}']`);
+
+            if (inputAtivado && inputAtivado.type == 'radio') {
+                inputAtivado.checked = true;
+            }
+        }
+
+        function filtroAtivoTexto(nameInput, valor) {
+            const inputAtivado = document.querySelector(`input[name='${nameInput}']`);
+            if (inputAtivado) {
+                inputAtivado.value = valor;
+            }
+        }
+    </script>
     <link rel="stylesheet" href="produtos.css">
     <link rel="stylesheet" href="pgPadrao.css">
+    <link rel="shortcut icon" href="img/icons/logoAmareloEscuro.png" type="image/x-icon">
+    <!-- Link do bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- link do bootstrap -->
+    <!-- Fontes inter exportada do google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <!-- Fontes inter exportada do google -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mercazon</title>
 </head>
 
-<!-- Códigos de acessibilidade -->
-<script src="https://cdn.userway.org/widget.js" data-account="kCDHqw9ltL"></script>
-  <div vw class="enabled">
-    <div vw-access-button class="active"></div>
-    <div vw-plugin-wrapper>
-      <div class="vw-plugin-top-wrapper"></div>
-    </div>
-  </div>
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-  <script>
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
-  </script>
-
 <body>
 
-    <header>
+    <header style="width: 100%">
         <nav class="cabecalhoSuperior">
             <div class="d-flex">
                 <a href="guiaDoLojista.php">Guia do lojista</a>
@@ -352,222 +54,55 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
         </nav>
 
         <nav class="cabecalhoInferior">
-            <a href="index.php">
-                <img src="img/img pg inicial/logoAmareloEscuro.png" alt="" data-aos="zoom-in">
+            <a class="logoMercazon" href="index.php">
+                <img src="img/icons/logoAmareloEscuro.png" alt="Logo Mercazon" data-aos="zoom-in">
             </a>
 
-            <form action="produtosBusca.php" class="pesquisaCentral" method="POST">
-                <input type="text" placeholder="Busque Seus Produtos" name="nome" value="<?php echo $nome; ?>"
-                    onKeyUp="pegandoPesquisa()" id="buscarInput">
-                <button type="submit" name="filtro" value="preco"><img src="img/img pg padrao/lupa.png" alt=""></button>
+            <form action="#" class="filtroNome pesquisaCentral" id="formNome">
+                <input type="text" placeholder="Busque Seus Produtos" name="nome" id="buscarInput">
+                <button type="button" onclick="filtrar()"><img src="img/icons/lupa.png" alt="Lupa de pesquisa"></button>
             </form>
 
 
             <div class="d-flex">
-                <?php if (isset($_SESSION['idUser'])) {
-                    include_once "restrito/conexao.php";
-                    $id = $_SESSION['idUser'];
-                    $sql = "SELECT imagem_usuario FROM usuarios WHERE id = $id;";
-                    $resultado = $conn->query($sql);
-                    $linha = mysqli_fetch_assoc($resultado);
-                    $imagemLogin = $linha['imagem_usuario'] ? ('img/' . $linha['imagem_usuario']) : "imgs/profile.png";
-
-                    echo "<a href='restrito/usuario.php'> <img src='$imagemLogin' class='loginButton' data-bs-toggle='modal'> </a>";
-                } else if (isset($_SESSION['idLojista'])) {
-                    include_once "restrito/conexao.php";
-                    $id = $_SESSION['idLojista'];
-                    $sql = "SELECT imagem_lojista FROM lojistas WHERE id = $id;";
-                    $resultado = $conn->query($sql);
-                    $linha = mysqli_fetch_assoc($resultado);
-                    $imagemLogin = $linha['imagem_lojista'] ? ('img/' . $linha['imagem_lojista']) : "imgs/profile.png";
-
-                    echo "<a href='restrito/lojistaLojista.php'> <img src='$imagemLogin' class='loginButton' data-bs-toggle='modal'> </a>";
-
-                } else {
-                    echo "<img src='imgs/profile.png' class='loginButton' data-bs-toggle='modal'
-                    data-bs-target='#exampleModal' style='filter: invert(1);'>";
-
-                } ?>
-
+                <?php imagemPerfilHeader() ?>
                 <div class="dropdown">
-                    <div src="" alt="" class="naoClicado" id="favoritos" data-bs-toggle="dropdown"
-                        aria-expanded="false"></div>
+                    <div aria-label="Adicionar aos favoritos" role="button" src="" alt="Coração de favoritos"
+                        class="naoClicado" id="favoritos" data-bs-toggle="dropdown" aria-expanded="false"></div>
                     <ul class="dropdown-menu">
-
-                        <?php
-
-                        if (isset($_SESSION['idUser'])) {
-                            // Consulta SQl para aparecer os elementos favoritos no header
-                            $sqlElementosFavoritosHeader = "SELECT p.id, p.nome, p.preco, p.categoria, p.imagem 
-                                                        FROM produtos AS p
-                                                        JOIN usuario_favorita_produto AS ufp ON p.id = ufp.id_produto
-                                                        WHERE ufp.id_usuario = $user
-                                                        ORDER BY ufp.id DESC
-                                                        LIMIT 3;
-                                                        ";
-                            $resultado = $conn->query($sqlElementosFavoritosHeader);
-
-                            while ($linha = mysqli_fetch_assoc($resultado)) {
-                                $nome = $linha['nome'];
-                                $imagem = $linha['imagem'];
-                                $preco = $linha['preco'];
-                                $categoria = $linha['categoria'];
-                                $id = $linha['id'];
-
-                                echo "
-                                    <li class='produtosNoHeader'><a href='produto.php?id=$id' class='dropdown-item d-flex'> 
-                                    <img src='img/$imagem' alt='$nome'>
-                                    <div class= 'd-flex flex-column justify-content-center'>
-                                    <h6>$nome</h6>
-                                    <h6>R$ $preco</h6>
-                                    </div>
-                                    </a></li>
-                                    ";
-                            }
-                            echo "<li><a class='dropdown-item' href='restrito/usuario.php'>Ver Todos</a></li>";
-                        } else {
-                            echo "<li data-bs-toggle='modal'
-                    data-bs-target='#exampleModal'><a class='dropdown-item' style='cursor: pointer !important;'>Logue-se para ver os favoritos</a></li>";
-                        }
-                        ?>
+                        <?php dropdownHeader() ?>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-
-    <!-- Modal de login -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div>
-                        <p>Entre Com</p>
-                    </div>
-
-                    <div class="imagensLoginCadastro">
-                        <img src="img/img pg padrao/face.png" alt="">
-                        <img src="img/img pg padrao/google.png" alt="">
-                    </div>
-
-                    <form action="" method="post">
-                        <label for="emailL">E-mail</label><br>
-                        <input type="email" name="emailL" id="email"><br>
-
-                        <label for="senhaL">Senha</label><br>
-                        <div>
-                            <img class="olho" src="img/img pg padrao/olho.png" alt="">
-                            <input type="password" name="senhaL" id="senha">
-                        </div>
-
-
-                        <a href="">Esqueceu Sua Senha?</a>
-
-                        <br>
-                        <br>
-                        <div id="loginBotao">
-                            <input name="loginSubmit" type="submit" value="Login">
-                        </div>
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <!--Botão pro modal de cadastro-->
-                    <p>Não Possui Conta?</p>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <u>Cadastre-Se</u>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal de login -->
-
-    <!-- Modal de cadastro-->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Cadastro</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <form action="index.php" method="POST">
-                        <label for="nomeCa">Nome Completo</label><br>
-                        <input type="text" name="nomeC" id="nomeCa"><br>
-
-                        <label for="emailC">E-mail</label><br>
-                        <input type="email" name="emailC" id="emailC"><br>
-
-                        <label for="senhaC">Senha</label><br>
-                        <input type="number" name="senhaC" id="senhaC"><br>
-
-                        <label for="enderecoC">Endereço</label><br>
-                        <input type="text" name="enderecoC" id="enderecoC"><br>
-
-                        <label for="dataNcC">Data de Nascimento</label><br>
-                        <input type="date" name="data_nascimentoC" id="dataNcC"><br>
-
-                        <br>
-
-                        <div id="loginBotao">
-                            <input name="cadastroSubmit" type="submit" value="Cadastre-se">
-                        </div>
-
-                    </form>
-
-                    <div class="modal-footer">
-                        <!--Botão pro modal de login-->
-                        <p>Já Possui Conta?</p>
-
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <u>Logue-se</u>
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal de cadastro-->
-
-    <!---------------------- Conteudo principal - MAIN ---------------------->
-
     <main class="container">
-        <!-- nome, nome da loja e preço -->
 
         <!----------------------------- Menu de botões de filtro ----------------------------->
         <div class="menu">
-            <!-- Botões de aplicar filtro e de ordenar produtos -->
             <div class="botoesMenu">
-                <button class="buttonBusca" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight2"
-                    aria-controls="offcanvasRight2">Ordenar</button>
-                <button class="buttonBusca" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                    aria-controls="offcanvasRight" id="bFiltros">Filtros</button>
+                <button class="buttonBusca" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#barraLateralOrdenar" aria-controls="offcanvasRight2">Ordenar</button>
+                <button class="buttonBusca" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#barraLateralFiltrar" aria-controls="offcanvasRight" id="bFiltros">Filtros</button>
             </div>
 
         </div>
         <!----------------------------- Menu de botões de filtro ----------------------------->
 
-        <!----------------------------- Telas laterias ----------------------------->
-        <form action="" method="POST">
 
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
-                aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasRightLabel">Filtrar por</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
+        <!----------------------------- Telas laterias ----------------------------->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="barraLateralFiltrar"
+            aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">Filtrar por</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+
+                <form action="produtosBusca.php" method="POST" id="formFiltro">
                     <!-- DADOS OCULTOS DO FORM -->
-                    <input type="hidden" name="nome" id="nomeProduto">
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
@@ -581,54 +116,52 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
                                 data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body filtrosCorpo">
 
-                                    <input type="radio" name="categoria" id="roupa" value="roupa" class="radioFiltro"
-                                        <?php echo checarFiltro($categoria, 'roupa'); ?>>
+                                    <input type="radio" name="categoria" id="roupa" value="roupa" class="radioFiltro">
                                     <label for="roupa" class="buttonFiltroSelecao button">Roupas</label>
 
                                     <input type="radio" name="categoria" id="cosmético" value="cosmetico"
-                                        class="radioFiltro" <?php echo checarFiltro($categoria, 'cosmético'); ?>>
+                                        class="radioFiltro">
                                     <label for="cosmético" class="buttonFiltroSelecao button">Cosméticos</label>
 
                                     <input type="radio" name="categoria" id="eletrônico" value="eletronico"
-                                        class="radioFiltro" <?php echo checarFiltro($categoria, 'eletrônico'); ?>>
+                                        class="radioFiltro">
                                     <label for="eletrônico" class="buttonFiltroSelecao button">Eletrônicos</label>
 
-                                    <input type="radio" name="categoria" id="lanche" value="lanche" class="radioFiltro"
-                                        <?php echo checarFiltro($categoria, 'lanche'); ?>>
+                                    <input type="radio" name="categoria" id="lanche" value="lanche" class="radioFiltro">
                                     <label for="lanche" class="buttonFiltroSelecao button">Lanches</label>
 
-                                    <input type="radio" name="categoria" id="doce" value="doce" class="radioFiltro"
-                                        <?php echo checarFiltro($categoria, 'doce'); ?>>
+                                    <input type="radio" name="categoria" id="doce" value="doce" class="radioFiltro">
                                     <label for="doce" class="buttonFiltroSelecao button">Doces</label>
 
                                     <input type="radio" name="categoria" id="brinquedo" value="brinquedo"
-                                        class="radioFiltro" <?php echo checarFiltro($categoria, 'brinquedo'); ?>>
+                                        class="radioFiltro">
                                     <label for="brinquedo" class="buttonFiltroSelecao button">Brinquedos</label>
 
                                     <input type="radio" name="categoria" id="eletrodoméstico" value="eletrodomestico"
-                                        class="radioFiltro" <?php echo checarFiltro($categoria, 'eletrodoméstico'); ?>>
+                                        class="radioFiltro">
                                     <label for="eletrodoméstico"
                                         class="buttonFiltroSelecao button">Eletrodomésticos</label>
 
                                     <input type="radio" name="categoria" id="servico" value="servico"
-                                        class="radioFiltro" <?php echo checarFiltro($categoria, 'servico'); ?>>
+                                        class="radioFiltro">
                                     <label for="servico" class="buttonFiltroSelecao button">Serviços</label>
 
-                                    <input type="radio" name="categoria" id="jogo" value="jogo" class="radioFiltro"
-                                        <?php echo checarFiltro($categoria, 'jogo'); ?>>
+                                    <input type="radio" name="categoria" id="jogo" value="jogo" class="radioFiltro">
                                     <label for="jogo" class="buttonFiltroSelecao button">Jogos</label>
 
                                     <input type="radio" name="categoria" id="utensílio" value="utensilio"
-                                        class="radioFiltro" <?php echo checarFiltro($categoria, 'utensílio'); ?>>
+                                        class="radioFiltro">
                                     <label for="utensílio" class="buttonFiltroSelecao button">Utensílios</label>
 
                                     <input type="radio" name="categoria" id="acessório" value="acessório"
-                                        class="radioFiltro" <?php echo checarFiltro($categoria, 'acessório'); ?>>
+                                        class="radioFiltro">
                                     <label for="acessório" class="buttonFiltroSelecao button">Acessórios</label>
 
                                     <input type="radio" name="categoria" id="calçado" value="calcado"
-                                        class="radioFiltro" <?php echo checarFiltro($categoria, 'calçado'); ?>>
+                                        class="radioFiltro">
                                     <label for="calçado" class="buttonFiltroSelecao button">Calçados</label>
+
+
                                 </div>
                             </div>
                         </div>
@@ -644,13 +177,7 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
                             <div id="flush-collapseTwo" class="accordion-collapse collapse"
                                 data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body filtrosCorpo">
-
-                                    <input type="text" name="marca" class="texoMarca" value="<?php $marca ?>">
-
-                                    <!-- <input type="radio" name="marca" id="havaianas" value="havaianas"
-                                        class="radioFiltro" <?php // echo checarFiltro($marca, 'havaianas'); ?>>
-                                    <label for="havaianas" class="buttonFiltroSelecao button">Havaianas</label> -->
-
+                                    <input type="text" name="marca" class="texoMarca">
                                 </div>
                             </div>
                         </div>
@@ -667,19 +194,18 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
                                 data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body filtrosCorpo">
                                     <input type="radio" name="genero" id="masculino" value="masculino"
-                                        class="radioFiltro" <?php echo checarFiltro($genero, 'masculino'); ?>>
+                                        class="radioFiltro">
                                     <label for="masculino" class="buttonFiltroSelecao button">Masculino</label>
 
-                                    <input type="radio" name="genero" id="feminino" value="feminino" class="radioFiltro"
-                                        <?php echo checarFiltro($genero, 'feminino'); ?>>
+                                    <input type="radio" name="genero" id="feminino" value="feminino"
+                                        class="radioFiltro">
                                     <label for="feminino" class="buttonFiltroSelecao button">Feminino</label>
 
-                                    <input type="radio" name="genero" id="unissex" value="unissex" class="radioFiltro"
-                                        <?php echo checarFiltro($genero, 'unissex'); ?>>
+                                    <input type="radio" name="genero" id="unissex" value="unissex" class="radioFiltro">
                                     <label for="unissex" class="buttonFiltroSelecao button">Unissex</label>
 
-                                    <input type="radio" name="genero" id="infantil" value="infantil" class="radioFiltro"
-                                        <?php echo checarFiltro($genero, 'infantil'); ?>>
+                                    <input type="radio" name="genero" id="infantil" value="infantil"
+                                        class="radioFiltro">
                                     <label for="infantil" class="buttonFiltroSelecao button">Infantil</label>
                                 </div>
                             </div>
@@ -696,28 +222,22 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
                             <div id="flush-collapseFour" class="accordion-collapse collapse"
                                 data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body filtrosCorpo">
-                                    <input type="radio" name="cor" id="preto" value="preto" class="radioFiltro" <?php
-                                    echo checarFiltro($cor, 'preto'); ?>>
+                                    <input type="radio" name="cor" id="preto" value="preto" class="radioFiltro">
                                     <label for="preto" class="buttonFiltroSelecao button">Preto</label>
 
-                                    <input type="radio" name="cor" id="branco" value="branco" class="radioFiltro" <?php
-                                    echo checarFiltro($cor, 'branco'); ?>>
+                                    <input type="radio" name="cor" id="branco" value="branco" class="radioFiltro">
                                     <label for="branco" class="buttonFiltroSelecao button">Branco</label>
 
-                                    <input type="radio" name="cor" id="vermelho" value="vermelho" class="radioFiltro"
-                                        <?php echo checarFiltro($cor, 'vermelho'); ?>>
+                                    <input type="radio" name="cor" id="vermelho" value="vermelho" class="radioFiltro">
                                     <label for="vermelho" class="buttonFiltroSelecao button">Vermelho</label>
 
-                                    <input type="radio" name="cor" id="azul" value="azul" class="radioFiltro" <?php echo
-                                        checarFiltro($cor, 'azul'); ?>>
+                                    <input type="radio" name="cor" id="azul" value="azul" class="radioFiltro">
                                     <label for="azul" class="buttonFiltroSelecao button">Azul</label>
 
-                                    <input type="radio" name="cor" id="verde" value="verde" class="radioFiltro" <?php
-                                    echo checarFiltro($cor, 'verde'); ?>>
+                                    <input type="radio" name="cor" id="verde" value="verde" class="radioFiltro">
                                     <label for="verde" class="buttonFiltroSelecao button">Verde</label>
 
-                                    <input type="radio" name="cor" id="amarelo" value="amarelo" class="radioFiltro"
-                                        <?php echo checarFiltro($cor, 'amarelo'); ?>>
+                                    <input type="radio" name="cor" id="amarelo" value="amarelo" class="radioFiltro">
                                     <label for="amarelo" class="buttonFiltroSelecao button">Amarelo</label>
                                 </div>
                             </div>
@@ -736,265 +256,125 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
                                 <div class="preco">
                                     <span>Menor preço</span>
                                     <span>Maior preço</span>
-                                    <input type="number" id="minPrice" value="<?php echo $precoMaior; ?>" min="0"
-                                        max="90000" name="precoMaior">
-                                    <input type="number" id="maxPrice" value="<?php echo $precoMenor; ?>" min="0"
-                                        max="90000" name="precoMenor">
+                                    <input type="number" id="maxPrice" min="0" max="90000" name="precoMenor" value="0">
+                                    <input type="number" id="minPrice" min="0" max="90000" name="precoMaior"
+                                        value="90000">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <label for="aplicarFiltro" class="labelSubmitFiltro">Aplicar filtros</label>
-                    <input id="aplicarFiltro" type="submit" value="<?php echo $ordem ?>" class="submitFiltro"
-                        name="filtro" data-bs-dismiss="offcanvas" aria-label="Close">
+                    <input id="aplicarFiltro" type="button" class="submitFiltro" name="filtro"
+                        data-bs-dismiss="offcanvas" aria-label="Close" onclick="filtrar()">
 
                     <label for="removerFiltro" class="labelSubmitFiltro">Remover filtros</label>
-                    <input id="removerFiltro" type="submit" class="submitFiltro" name="removeFiltro"
-                        data-bs-dismiss="offcanvas" aria-label="Close">
-                </div>
+                    <input id="removerFiltro" type="button" class="submitFiltro" name="remover_filtro" data-bs-dismiss="offcanvas" aria-label="Close" onclick="removerFiltros()">
+                </form>
             </div>
 
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight2"
-                aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasRightLabel">Ordenar por</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body ordenarCorpo">
-                    <label for="maisBuscados"
-                        class="ordenarButton button <?php echo checarOrdenm($ordem, 'contador_cliques DESC'); ?> ">Mais
-                        buscados</label>
-                    <input id="maisBuscados" type="submit" value="contador_cliques DESC" name="filtro"
-                        class="ordenarInput">
-
-                    <label for="maiorPreco"
-                        class="ordenarButton button <?php echo checarOrdenm($ordem, 'preco DESC'); ?> ">Maior
-                        preço</label>
-                    <input id="maiorPreco" type="submit" value="preco DESC" placeholder="Maior preço" name="filtro"
-                        class="ordenarInput">
-
-                    <label for="menorPreco"
-                        class="ordenarButton button <?php echo checarOrdenm($ordem, 'preco ASC'); ?>">Menor
-                        preço</label>
-                    <input id="menorPreco" type="submit" value="preco ASC" placeholder="Menor preço " name="filtro"
-                        class="ordenarInput">
-
-                </div>
+        </div>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="barraLateralOrdenar"
+            aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">Ordenar por</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-        </form>
+            <div class="offcanvas-body ordenarCorpo">
+                <form action="#" id="formOrdem">
+                    <input type="radio" name="ordem" id="maisBuscados" value="contador_cliques DESC" class="radioFiltro" checked>
+                    <label for="maisBuscados" class="button buttonFiltroSelecao" onclick="filtrar()">Mais buscados</label>
+
+                    <input type="radio" name="ordem" id="maiorPreco" value="preco DESC" class="radioFiltro">
+                    <label for="maiorPreco" class="button buttonFiltroSelecao" onclick="filtrar()">Maior preço</label>
+
+                    <input type="radio" id="menorPreco" value="preco ASC" name="ordem" class="radioFiltro">
+                    <label for="menorPreco" class="button buttonFiltroSelecao" onclick="filtrar()">Menor preço</label>
+                </form>
+
+            </div>
+        </div>
         <!----------------------------- Telas laterias ----------------------------->
 
-        <!----------------------------- Produtos exibidos na página ----------------------------->
         <div class="containerCards">
 
             <?php
+            include_once "scripts.php";
+            include_once "restrito/conexao.php";
 
-            if (isset($_POST['filtro']) || isset($_GET['pagina']) || isset($_POST['removeFiltro']) || isset($_GET['categoria'])) {
+            $conn = pegarConexao('usuario');
 
-                $querryDividida = explode('LIMIT', $_SESSION['sql']);
-                $querryDividida[0] .= "LIMIT $offset, $num_items_por_pagina;";
-                $_SESSION['sql'] = $querryDividida[0];
-                // LIMIT $offset, $num_items_por_pagina;
-            
-                $resultado = mysqli_query($conn, $_SESSION['sql']);
-                while ($linha = mysqli_fetch_assoc($resultado)) {
-                    $nome = $linha['nome'];
-                    $imagem = $linha['imagem'];
-                    $preco = $linha['preco'];
-                    $nomeLoja = $linha['nome_estabelecimento'];
-                    $id = $linha['id'];
+            $num_items_por_pagina = 16;
+            $pagina_atual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+            $offset = ($pagina_atual - 1) * $num_items_por_pagina;
 
+            $precoMaior = isset($_GET['precoMaior']) ? clear($conn, $_GET['precoMaior']) : 90000;
+            $precoMenor = isset($_GET['precoMenor']) ? clear($conn, $_GET['precoMenor']) : 0;
+            $nome = isset($_GET['nome']) ? clear($conn, $_GET['nome']) : "";
+            $ordem = isset($_GET['ordem']) ? clear($conn, $_GET['ordem']) : "contador_cliques DESC";
 
-                    echo "
-                <div class='card' onclick=\"location.href='produto.php?id=$id'\">
-                    <div class='parteSuperiorCard'>
-                        <img src='img/$imagem' alt='$nome'>
-                        <form target='hiddenFrame' id='favoritar' action='restrito/favoritar.php' method='POST' onsubmit='event.stopPropagation()'>
-                            <input type='hidden' name='idFavorito' value='$id'>
-                            <input type='hidden' name='user' value='$user'>";
+            $sql = "SELECT p.id, p.nome, p.preco, p.imagem, l.nome_estabelecimento
+                FROM produtos AS p JOIN lojistas as l ON p.id_lojista = l.id
+                WHERE ";
+            $sqlContadora = "SELECT COUNT(id) AS total FROM produtos AS p WHERE ";
 
-                    if (isset($_SESSION['idUser'])) {
-                        $id_usuario = $_SESSION['idUser'];
-                        $sql = "SELECT id_produto FROM usuario_favorita_produto WHERE id_usuario = $id_usuario AND id_produto = $id;";
-                        $resultado2 = $conn->query($sql);
-                        $numLinha = mysqli_num_rows($resultado2);
-                        if ($numLinha === 1) {
-                            echo "<button type='submit' value='Favoritar' name='favoritoSubmit'>
-                                            <svg class='favoritaCoracao coracaoFavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' class='bi bi-heart-fill' viewBox='0 0 16 16'>
-                                            <path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314' />
-                                            </svg>
-                                        </button>";
-                        } else {
-                            echo "<button type='submit' value='Favoritar' name='favoritoSubmit' onclick='event.stopPropagation()'>
-                                        <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='#004F90' class'' bi bi-heart' viewBox='0 0 16 16'>
-                                            <path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                                        </svg>
-                                             <path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314' />
-                                        </svg>
-                                    </button>";
-                        }
-
-                    } else {
-                        echo "<button type='submit' value='Favoritar' name='favoritoSubmit' onclick='event.stopPropagation()'>
-                                <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='#004F90' class'' bi bi-heart' viewBox='0 0 16 16'>
-                                    <path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                                </svg>
-                                     <path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314' />
-                                </svg>
-                            </button>";
-                    }
-                    echo "
-                        </form>
-                    </div>
-                    <div class='parteInferiorCard'>
-                        <h4>$nome</h4>
-                        <h6>$nomeLoja</h6>
-                        <h6>R$ $preco</h6>
-                        <a class='btn-p4' href=''>Ver Produto</a>
-                    </div>
-                </div>";
-                }
-            } else {
-                $_SESSION['sql'] = "SELECT p.id, p.nome, p.preco, p.imagem, l.nome_estabelecimento FROM produtos AS p JOIN lojistas as l ON p.id_lojista = l.id ORDER BY 'contador_cliques' LIMIT 0, 16;";
-
-
-                $querryDividida = explode('LIMIT', $_SESSION['sql']);
-                $querryDividida[0] .= "LIMIT $offset, $num_items_por_pagina;";
-                $_SESSION['sql'] = $querryDividida[0];
-                // LIMIT $offset, $num_items_por_pagina;
-            
-                $resultado = mysqli_query($conn, $_SESSION['sql']);
-                while ($linha = mysqli_fetch_assoc($resultado)) {
-                    $nome = $linha['nome'];
-                    $imagem = $linha['imagem'];
-                    $preco = $linha['preco'];
-                    $nomeLoja = $linha['nome_estabelecimento'];
-                    $id = $linha['id'];
-
-                    echo "
-                <div class='card' onclick=\"location.href='produto.php?id=$id'\">
-                    <div class='parteSuperiorCard'>
-                        <img src='img/$imagem' alt='$nome'>
-                        <form target='hiddenFrame' id='favoritar' action='restrito/favoritar.php' method='POST' onsubmit='event.stopPropagation()'>
-                            <input type='hidden' name='idFavorito' value='$id'>
-                            <input type='hidden' name='user' value='$user'>";
-
-                    if (isset($_SESSION['idUser'])) {
-                        $id_usuario = $_SESSION['idUser'];
-                        $sql = "SELECT id_produto FROM usuario_favorita_produto WHERE id_usuario = $id_usuario AND id_produto = $id;";
-                        $resultado2 = $conn->query($sql);
-                        $numLinha = mysqli_num_rows($resultado2);
-                        if ($numLinha === 1) {
-                            echo "<button type='submit' value='Favoritar' name='favoritoSubmit'>
-                                            <svg class='favoritaCoracao coracaoFavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' class='bi bi-heart-fill' viewBox='0 0 16 16'>
-                                            <path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314' />
-                                            </svg>
-                                        </button>";
-                        } else {
-                            echo "<button type='submit' value='Favoritar' name='favoritoSubmit' onclick='event.stopPropagation()'>
-                                        <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='#004F90' class'' bi bi-heart' viewBox='0 0 16 16'>
-                                            <path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                                        </svg>
-                                             <path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314' />
-                                        </svg>
-                                    </button>";
-                        }
-
-                    } else {
-                        echo "<button type='submit' value='Favoritar' name='favoritoSubmit' onclick='event.stopPropagation()'>
-                                <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='#004F90' class'' bi bi-heart' viewBox='0 0 16 16'>
-                                    <path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                                </svg>
-                                     <path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314' />
-                                </svg>
-                            </button>";
-                    }
-                    echo "
-                        </form>
-                    </div>
-                    <div class='parteInferiorCard'>
-                        <h4>$nome</h4>
-                        <h6>Nome da Loja</h6>
-                        <h6>R$ $preco</h6>
-                        <a class='btn-p4' href='produto.php?id=$id'>Ver Produto</a>
-                    </div>
-                </div>";
-                }
+            if (isset($_GET['categoria']) && $_GET['categoria']) {
+                $categoria = clear($conn, $_GET['categoria']);
+                $sql .= "p.categoria = '$categoria' AND ";
+                $sqlContadora .= "p.categoria = '$categoria' AND ";
+                echo "<script> filtroAtivoRadio('$categoria'); </script>";
             }
-
-            // Favoritando os produtos 
-            if (isset($_POST['favoritoSubmit'])) {
-                $idProduto = $_POST['idFavorito'];
-                $sql = "SELECT id FROM usuario_favorita_produto WHERE id_usuario = $user AND id_produto = $idProduto";
-                $resultado = $conn->query($sql);
-                $numLinha = mysqli_num_rows($resultado);
-
-                echo $sql;
-
-                if ($numLinha > 0) {
-                    $sql = "DELETE FROM usuario_favorita_produto WHERE id_usuario = $user AND id_produto = $idProduto;";
-                    if ($conn->query($sql)) {
-                        echo "<script>
-                             alert('O produto não está mais na sua lista de favoritos');
-                            </script>";
-                    } else {
-                        echo " <script>
-                             alert('houve um problema para favoritar o produto. Tente novamente mais tarde');
-                            </script>";
-                    }
-                } else {
-                    $sql = "INSERT INTO usuario_favorita_produto (id_usuario, id_produto) VALUES ('$user', '$idProduto');";
-                    if ($conn->query($sql)) {
-                        echo "  <script>
-                             alert('produto favoritado');
-                            </script>";
-                    } else {
-                        echo " <script>
-                             alert('houve um problema para favoritar o produto. Tente novamente mais tarde');
-                            </script>";
-                    }
-                }
+            if (isset($_GET['marca']) && $_GET['marca']) {
+                $marca = clear($conn, $_GET['marca']);
+                $sql .= "p.marca like '%$marca%' AND ";
+                $sqlContadora .= "p.marca = '$marca' AND ";
+                echo "<script> filtroAtivoTexto('marca', '$marca') </script>";
             }
+            if (isset($_GET['genero']) && $_GET['genero']) {
+                $genero = clear($conn, $_GET['genero']);
+                $sql .= "p.genero = '$genero' AND ";
+                $sqlContadora .= "p.genero = '$genero' AND ";
+                echo "<script> filtroAtivoRadio('$genero'); </script>";
+            }
+            if (isset($_GET['cor']) && $_GET['cor']) {
+                $cor = clear($conn, $_GET['cor']);
+                $sql .= "p.cor = '$cor' AND ";
+                $sqlContadora .= "p.cor = '$cor' AND ";
+                echo "<script> filtroAtivoRadio('$cor'); </script>";
+            }
+            if ($nome) {
+                echo "<script> filtroAtivoTexto('nome', '$nome') </script>";
+            }
+            if ($ordem != 'contador_cliques DESC') {
+                echo "<script> filtroAtivoRadio('$ordem'); </script>";
+            }
+            echo "<script> filtroAtivoTexto('precoMaior', '$precoMaior') </script>";
+            echo "<script> filtroAtivoTexto('precoMenor', '$precoMenor') </script>";
 
+            $pesquisarNome = $nome ? "p.nome LIKE '%$nome%' AND" : "";
+            $sql = $sql . "$pesquisarNome p.preco BETWEEN $precoMenor AND $precoMaior ORDER BY $ordem LIMIT $offset, $num_items_por_pagina;";
+            $sqlContadora = $sqlContadora . "$pesquisarNome preco BETWEEN $precoMenor AND $precoMaior;";
 
+            // Trabalhar mais na função. fazer um parâmetro para que opere dentro e fora do restrito. Também rever outras questões como favorito e funções específicas para usuários específicos (usuario/lojista)
+            gerarCard($sql);
             ?>
-
-<iframe name="hiddenFrame" style="display:none;"></iframe> <!-- Iframe invisível -->
-
         </div>
-        <!----------------------------- Produtos exibidos na página ----------------------------->
 
         <nav aria-label="Paginação">
             <ul class="pagination justify-content-center">
+
                 <?php
+                $resultadoContador = mysqli_query($conn, $sqlContadora);
+                $numeroLinhas = mysqli_fetch_assoc($resultadoContador);
+                $total_paginas = ceil($numeroLinhas['total'] / $num_items_por_pagina);
 
-                if (isset($_POST['filtro']) || isset($_POST['removeFiltro']) || isset($_GET['pagina']) || isset($_GET['categoria'])) {
-                    // echo $sqlContadora;
-                    $resultadoContador = mysqli_query($conn, $_SESSION['sqlContadora']);
-                    $numeroLinhas = mysqli_fetch_assoc($resultadoContador);
-                    $total_paginas = ceil($numeroLinhas['total'] / $num_items_por_pagina);
-
-                    // Exibe links de páginação
-                    for ($i = 1; $i <= $total_paginas; $i++) {
-                        echo "<li class='page-item " . ($pagina_atual == $i ? 'active' : '') . "'><a class='page-link' href='produtosBusca.php?pagina=$i'>$i</a></li>";
-                    }
-                } else {
-                    // echo $sqlContadora;
-                    $_SESSION['sqlContadora'] = "SELECT COUNT(id) AS total FROM produtos AS p WHERE preco BETWEEN 0 AND 90000;";
-                    $resultadoContador = mysqli_query($conn, $_SESSION['sqlContadora']);
-                    $numeroLinhas = mysqli_fetch_assoc($resultadoContador);
-                    $total_paginas = ceil($numeroLinhas['total'] / $num_items_por_pagina);
-
-                    // Exibe links de páginação
-                    for ($i = 1; $i <= $total_paginas; $i++) {
-                        echo "<li class='page-item " . ($pagina_atual == $i ? 'active' : '') . "'><a class='page-link' href='produtosBusca.php?pagina=$i'>$i</a></li>";
-                    }
+                for ($i = 1; $i <= $total_paginas; $i++) {
+                    echo "<li class='page-item " . ($pagina_atual == $i ? 'active' : '') . "'>
+                        <button class='page-link' onclick='paginacao($i)'>$i</button>
+                        </li>";
                 }
                 ?>
             </ul>
         </nav>
-
-
     </main>
 
     <footer>
@@ -1042,30 +422,227 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
 
     </footer>
 
-    <!---------------------- Conteudo principal - MAIN ---------------------->
+    <!----------------------------- Conjunto de modais ----------------------------->
 
-    <script>
+    <!-- Modal de login de usuário -->
+    <div class="modal fade" id="modalLoginUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="POST" id="formLoginUsuario"
+                        onsubmit="RequisicaoPhpLogin('formLoginUsuario', event)">
+                        <label for="email">E-mail</label>
+                        <input type="email" name="email" id="email">
+                        <label for="senha">Senha</label>
+                        <div>
+                            <img class="olho" src="img/icons/olhofechado.png" alt="icone de olho aberto"
+                                onclick="mostrarSenha(this)">
+                            <input type="password" name="senha" id="senha">
+                        </div>
+                        <span class="aviso"></span>
+                        <a href="#">Esqueceu Sua Senha?</a>
+                        <input type="hidden" name="loginUsuario">
+                        <input type="submit" value="Entrar">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <!--Botão pro modal de cadastro-->
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalCadastroUsuario">
+                        Não possui conta? <u>Cadastre-Se</u>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de login de usuário -->
+
+    <!-- Modal de login de lojista -->
+    <div class="modal fade" id="modalLoginLojista" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login lojista</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" id="formLoginLojista" method="POST"
+                        onsubmit="RequisicaoPhpLogin('formLoginLojista', event)">
+                        <label for="emailL">E-mail</label>
+                        <input type="email" name="email" id="emailL">
+                        <label for="senhaL">Senha</label>
+                        <div>
+                            <img class="olho" src="img/icons/olhofechado.png" alt="icone de olho aberto"
+                                onclick="mostrarSenha(this)">
+                            <input type="password" name="senha" id="senhaL">
+                        </div>
+                        <span class="aviso"></span>
+                        <a href="#">Esqueceu Sua Senha?</a>
+                        <input type="hidden" name="loginLojista">
+                        <span class="aviso"></span>
+                        <input type="submit" value="Entrar">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalCadastroLojista">
+                        Não possui conta? <u>Cadastre-Se</u>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de login de lojista -->
+
+    <!-- Modal de cadastro de usuário -->
+    <div class="modal fade" id="modalCadastroUsuario" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro usuário</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="POST" id="formCadastroUsuario"
+                        onsubmit="RequisicaoPhpCadastro(this, event)" enctype="multipart/form-data">
+                        <label for="nomeC">Nome</label>
+                        <input type="text" name="nome" id="nomeC" class="campoAviso">
+
+                        <label for="imagemUsuario" class="imagemLabel campoAviso">
+                            <img src="img/icons/profile.png" alt="Imagem do usuário" id="previewUsuario" class="imagemUsuario">
+                            <button type="button" onclick="adicionarFoto(this)">Adicionar uma foto? (opcional)</button>
+                        </label>
+
+                        <input type="file" name="imagem" id="imagemUsuario" onchange="PreviewFoto(this, 'previewUsuario')" accept="image/*">
+
+                        <label for="emailC">E-mail</label>
+                        <input type="email" name="email" id="emailC" class="campoAviso">
+
+                        <label for="senhaC">Senha</label>
+                        <div class="campoAviso">
+                            <img class="olho" src="img/icons/olhofechado.png" alt="icone de olho aberto"
+                                onclick="mostrarSenha(this)">
+                            <input type="password" name="senha" id="senhaC">
+                        </div>
+
+                        <label for="enderecoC">Endereço</label>
+                        <input type="text" name="endereco" id="enderecoC" class="campoAviso">
+
+                        <label for="dataC">Data de Nascimento</label>
+                        <input type="date" name="data_nascimento" id="dataC" class="campoAviso">
+
+                        <input type="hidden" name="cadastroSubmit">
+                        <input type="submit" value="Cadastre-se">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de cadastro de usuário -->
+
+    <!-- Modal de cadastro de lojista -->
+    <div class="modal fade" id="modalCadastroLojista" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro lojista</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="POST" id="formCadastroLojista"
+                        onsubmit="RequisicaoPhpCadastro(this, event)" enctype="multipart/form-data">
+
+                        <label for="nomeCadastroLojista">Nome</label>
+                        <input type="text" name="nome" id="nomeCadastroLojista" class="campoAviso">
+
+                        <label for="nomeEstabelecimento">Nome do seu estabelecimento</label>
+                        <input type="text" name="nomeEstabelecimento" id="nomeEstabelecimento" class="campoAviso">
+
+                        <label for="enderecoLojista">Endereço do seu estabelecimento</label>
+                        <input type="text" name="endereco" id="enderecoLojista" class="campoAviso">
+
+                        <label for="emailLojista">E-mail</label>
+                        <input type="email" name="email" id="emailLojista" class="campoAviso">
+
+                        <label for="telefone">Telefone</label>
+                        <input type="text" name="telefone" id="telefone" class="campoAviso" oninput="numeroTelefoneMascara(this)">
+
+                        <label for="imagemLojista" class="campoAviso imagemLabel">
+                            <img src="img/icons/profile.png" alt="Imagem do Lojista" id="previewLojista" class="imagemLojista">
+                            <button type="button" onclick="adicionarFoto(this)">Adicionar sua foto</button>
+                        </label>
+                        <input type="file" name="imagemUsuario" id="imagemLojista" onchange="PreviewFoto(this, 'previewLojista')" accept="image/*">
+
+                        <label for="imagemEmpresa" class="imagemLabel campoAviso">
+                            <img src="img/icons/profile.png" alt="Imagem do Lojista" id="previewEmpresa" class="imagemEmpresa">
+                            <button type="button" onclick="adicionarFoto(this)">Adicionar sua foto</button>
+                        </label>
+                        <input type="file" name="imagemEmpresa" id="imagemEmpresa" onchange="PreviewFoto(this, 'previewEmpresa')" accept="image/*">
 
 
-        // Este código pega o valor da barra de pesquisa e o aplica em um input do tipo hidden no formulário
-        var nomeInput = document.getElementById("nomeProduto");
-        var nomeDigitado = document.getElementById("buscarInput");
-        // nomeInput.value = nomeDigitado.value;
-        function pegandoPesquisa() {
-            // console.log(nomeDigitado.value);
-            nomeInput.value = nomeDigitado.value;
-        }
+                        <label for="senhaLojistaCadastro">Senha</label>
+                        <div class="campoAviso">
+                            <img class="olho" src="img/icons/olhofechado.png" alt="icone de olho aberto"
+                                onclick="mostrarSenha(this)">
+                            <input type="password" name="senha" id="senhaLojistaCadastro">
+                        </div>
 
+                        <input type="hidden" name="cadastroLojistaSubmit">
+                        <input type="submit" value="Cadastre-se">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de cadastro de lojista -->
 
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+    <!----------------------------- Conjunto de modais ----------------------------->
+
 </body>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+<script src="script.js"></script>
+<script>
+    // função de filtro. Pegas as informações necessárias para carregar o filtro de produtos e faz uma requisição php via url.
+    function filtrar() {
+
+        setTimeout(() => {
+
+            const form = document.getElementById('formFiltro');
+            const formDados = new FormData(form);
+
+            const formularioFiltrosOrdem = document.getElementById("formOrdem");
+            const ordem = formularioFiltrosOrdem.querySelector('input[name="ordem"]:checked');
+            const nome = document.getElementById('buscarInput');
+            formDados.append('ordem', ordem.value);
+            formDados.append('nome', nome.value);
+
+            const formDadosUrl = new URLSearchParams(formDados).toString();
+            const url = form.action + '?' + formDadosUrl;
+            window.location.href = url;
+
+        }, 200);
+    }
+
+    // Função que remove os filtros da página de filtros. Ela recarrega a página com a url, mas sem elemntos da requisição get em php
+    function removerFiltros() {
+        const url = window.location.href;
+        const novoUrl = url.split("?");
+        window.location.href = novoUrl[0];
+    }
+
+    // Função que adiciona o parâmetro de paginação a url e recarrega a página
+    function paginacao(paginaAtual) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('pagina', paginaAtual);
+        window.location.href = url.toString();
+
+    }
+</script>
 
 </html>
-<script src="script.js"></script>

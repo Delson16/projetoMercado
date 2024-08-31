@@ -2,6 +2,7 @@
 session_start();
 include_once '../validarUsuario.php';
 include_once 'conexao.php';
+
 ?>
 
 <?php
@@ -18,7 +19,7 @@ $sql = "SELECT p.id, p.nome, p.preco, p.categoria, p.imagem
         ORDER BY ufp.id DESC
         LIMIT $offset, $num_items_por_pagina;
 ";
-
+$conn = pegarConexao('usuario');
 $result = $conn->query($sql);
 
 // Consulta SQl para aparecer os elementos favoritos no header

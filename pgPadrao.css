@@ -1,8 +1,8 @@
-@charset "utf8";
+@charset "utf-8";
 
 * {
-    margin: 0%;
-    padding: 0%;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
     font-family: inter;
 }
@@ -15,38 +15,23 @@
     --cor4: #ebf6ff;
     --cor5: #000219;
     --cor6: #FFBE00;
-    --cor7: #222222; 
-    
 }
-
 html {
     scroll-behavior: smooth;
 }
-
-header .loginButton{
-    border-radius: 50%;
-    height: 40px;
-}
-
 body {
     width: 100%;
     background-color: white;
 }
-
-
-
 iframe {
     display: none;
 }
-
-/*      SVGS
-SVG Calendario: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16"> <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg>
-
-*/
-
-/*---------------------------------Formatações Globais---------------------------------*/
-
 /*---------------------------Header----------------------------*/
+header .loginButton {
+    border-radius: 50%;
+    height: 40px;
+}
+
 header {
     position: fixed;
     top: 0;
@@ -61,7 +46,7 @@ header .cabecalhoSuperior {
     padding: 0.3% 7%;
 }
 
-header .loginButton{
+header .loginButton {
     border-radius: 50%;
 }
 
@@ -103,27 +88,27 @@ header .cabecalhoInferior .d-flex {
     margin: 0;
 }
 
-header .cabecalhoInferior .pesquisaCentral {
+header .cabecalhoInferior .filtroNome {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     background-color: var(--cor4);
     border-radius: 12px;
-    overflow: hidden;
     height: 40px;
     width: 40%;
 }
 
-.pesquisaCentral input {
+.filtroNome input {
     border: none;
     width: 100%;
     padding: 3% 1.5% 3% 3%;
 }
 
-.pesquisaCentral input:focus {
+.filtroNome input:focus {
     outline: none;
 }
 
-.pesquisaCentral button {
+.filtroNome button {
     border: none;
     background-color: transparent;
     display: flex;
@@ -132,16 +117,17 @@ header .cabecalhoInferior .pesquisaCentral {
     margin: 2%;
 }
 
-.pesquisaCentral button img {
+.filtroNome button img {
     width: 25px;
     transition: 0.25s;
 }
 
-.pesquisaCentral button img:hover {
+.filtroNome button img:hover {
     transform: scale(1.15);
     transition: 0.25s;
 }
-.cabecalhoInferior .d-flex{
+
+.cabecalhoInferior .d-flex {
     gap: 20px;
 }
 
@@ -150,7 +136,7 @@ header .cabecalhoInferior .pesquisaCentral {
 }
 
 .d-flex .dropdown .naoClicado {
-    background-image: url(img/img\ pg\ padrao/heart2Protótipo.png);
+    background-image: url(img/icons/coracao.png);
     background-size: contain;
     width: 40px;
     height: 39px;
@@ -160,7 +146,7 @@ header .cabecalhoInferior .pesquisaCentral {
 }
 
 .d-flex .dropdown .naoClicado:hover {
-    background-image: url(img/img\ pg\ padrao/coracaoBranco.png);
+    background-image: url(img/icons/coracaoBranco.png);
     transition: 0.25s;
     transform: scale(1.12);
 }
@@ -171,7 +157,7 @@ header .cabecalhoInferior .pesquisaCentral {
 }
 
 .d-flex .dropdown .clicado {
-    background-image: url(img/img\ pg\ padrao/coracaoBranco.png);
+    background-image: url(img/icons/coracaoBranco.png);
     background-size: contain;
     width: 40px;
     height: 39px;
@@ -180,18 +166,13 @@ header .cabecalhoInferior .pesquisaCentral {
     transition: 0.25s;
 }
 
-
 /*---------------------------Header----------------------------*/
 
-
-
-/*-----------------------------------------MODAL-----------------------------------------------*/
-
-.modal-content,
-.modal-content a,
-.modal-header h1 {
+/*------------------------------ Estilização dos modais (ALTERADOS) ------------------------------*/
+.modal,
+.modal-content a {
     color: var(--cor1);
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .modal-content {
@@ -200,11 +181,7 @@ header .cabecalhoInferior .pesquisaCentral {
 
 .modal-header,
 .modal-footer {
-    border: 0px solid black;
-}
-
-.modal-header {
-    margin-bottom: -5% !important;
+    border: none !important;
 }
 
 .modal-header h1 {
@@ -215,25 +192,14 @@ header .cabecalhoInferior .pesquisaCentral {
     font-size: 1.35rem !important;
 }
 
-
-.modal-body div {
+.modal-body form {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-}
-
-.modal-body .imagensLoginCadastro {
-    display: flex;
-    justify-content: center;
-    gap: 10%;
-}
-
-.modal-body .imagensLoginCadastro img {
-    width: 15%;
-    height: 15%;
 }
 
 .modal-body form label {
-    margin-top: 7%;
+    margin-top: 3%;
 }
 
 .modal-body form input {
@@ -242,42 +208,12 @@ header .cabecalhoInferior .pesquisaCentral {
     border: 1px solid rgb(148, 148, 148);
     border-radius: 3px;
     width: 100%;
+    height: 50px;
 }
 
-.modal-body form div {
-    position: relative;
-}
-
-.modal-body form .mb-3 {
+.modal-body div {
     display: flex;
-    flex-direction: column;
-}
-
-.modal-body form #selecionaImagem {
     position: relative;
-    margin: 10% 0%;
-}
-
-.modal-body form #selecionaImagem input {
-    z-index: 15;
-    display: none;
-}
-
-.modal-body form #selecionaImagem img {
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: 0.25s;
-    border: 1px solid black;
-    position: absolute;
-    left: 40%;
-}
-
-.modal-body form #selecionaImagem img:hover {
-    transition: 0.25s;
-    transform: scale(1.03);
-    border: 1px solid var(--cor1);
 }
 
 .modal-body form .olho {
@@ -288,19 +224,17 @@ header .cabecalhoInferior .pesquisaCentral {
     position: absolute;
 }
 
-
 .modal-body form a {
     font-size: 0.9rem;
     font-weight: 400;
 }
 
-.modal-body form #loginBotao:hover {
+.modal-body form input[type="submit"]:hover {
     transition: 0.25s;
     transform: scale(1.02);
-
 }
 
-.modal-body form #loginBotao input {
+.modal-body form input[type="submit"] {
     background-color: var(--cor1);
     font-size: 1.5rem;
     padding: 1.2% 14%;
@@ -312,26 +246,101 @@ header .cabecalhoInferior .pesquisaCentral {
 
 .modal-footer {
     display: flex;
-    justify-content: center;
+    justify-content: center !important;
 }
 
 .modal-footer button {
-    border: 0px solid black;
+    border: none;
     color: var(--cor1);
-    text-decoration: dotted !important;
     font-size: 1.1rem;
     font-weight: 600;
+    background-color: transparent;
 }
 
-/*-----------------------------------------MODAL-----------------------------------------------*/
+/* Estlisos exclusivos dos formulários de cadastro */
+
+.imagemLabel {
+    display: flex;
+    flex-direction: column;
+    column-gap: 15px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.imagemLabel img {
+    border: solid 2px var(--cor1);
+    cursor: pointer;
+}
+
+.imagemLabel button {
+    width: 80%;
+    background-color: var(--cor1);
+    padding: 5px;
+    border-radius: 7px;
+    border: none;
+    color: white;
+    margin-top: 10px;
+}
+
+.imagemUsuario {
+    border-radius: 50%;
+    height: 180px;
+    width: 180px;
+}
+
+.imagemLojista {
+    height: 180px;
+    width: 180px;
+    border-radius: 20px;
+}
+
+.imagemEmpresa {
+    width: 100%;
+    height: 180px;
+    border-radius: 20px;
+}
+
+input[type='file'] {
+    display: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form input {
+    height: 40px;
+    border-radius: 8px;
+    padding: 10px;
+    border: solid 1px black;
+    outline: none;
+}
+
+.aviso {
+    color: red;
+    padding-inline: 10px;
+    display: grid;
+    grid-template-columns: 5% 95%;
+    gap: 10px;
+    align-items: center;
+}
+
+.aviso svg {
+    width: 100%;
+}
+
+/* Estilização dos modais */
 
 /*-----------------------------------------------CARDS----------------------------------------*/
 
 .containerCards {
     padding: 3% 7%;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10% 4%;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0% 2%;
 }
 
 .containerCards .card {
@@ -475,14 +484,12 @@ header .cabecalhoInferior .pesquisaCentral {
     transition: 0.25s;
 }
 
+.buttonCoracao {
+    border: none;
+}
+
 /*-----------------------------------Formatação dos Botões Padrão------------------------- */
 
-
-/*----------------------------------------COMEÇO DO CONTEÚDO-----------------------------*/
-
-main {
-    margin-top: 5.5% !important;
-}
 
 /*---------------------------Footer----------------------------*/
 /* Footer */
@@ -511,6 +518,7 @@ footer {
 
 .linksPaginasFooter div a {
     color: var(--cor4);
+    width: fit-content;
     text-decoration: none;
     margin: 2% 0%;
     transition: 0.25s;
@@ -574,13 +582,9 @@ footer {
 
 /*---------------------------Footer----------------------------*/
 
-
-
-
 /*--------------------------Animação----------------------------*/
 
 @keyframes pulsa {
-
     0%,
     100% {
         transform: scale(1);
@@ -593,12 +597,7 @@ footer {
 
 /*--------------------------Animação----------------------------*/
 
-
-
-
 /*---------------------------------------------------Responsividade-----------------------------------------*/
-
-
 
 @media (min-width: 300px) and (max-width: 350px) {
 
@@ -630,6 +629,14 @@ footer {
         height: 30px;
         width: 55%;
         margin-left: -5%;
+    }
+
+    .pesquisaCentral input{
+        height: 30px;
+    }
+
+    .d-flex{
+        gap: 0px !important;
     }
 
     .pesquisaCentral input {
@@ -760,18 +767,6 @@ footer {
 
 /*--------------------------------------------------------------------------------*/
 
-
-
-
-
-
-
-
-
-
-
-/*--------------------------------------------------------------------------------*/
-
 @media (min-width: 351px) and (max-width: 400px) {
     /*---------------------------Header----------------------------*/
 
@@ -797,10 +792,17 @@ footer {
         height: 30px;
     }
 
+    .d-flex{
+        gap: 0px !important;
+    }
+
     header .cabecalhoInferior .pesquisaCentral {
         height: 30px;
         width: 55%;
         margin-left: -5%;
+    }
+    .pesquisaCentral input{
+        height: 30px;
     }
 
     .pesquisaCentral input {
@@ -928,16 +930,6 @@ footer {
     /*---------------------------Footer----------------------------*/
 }
 
-
-
-
-
-
-
-
-
-
-
 /*--------------------------------------------------------------------------------*/
 @media (min-width: 401px) and (max-width: 520px) {
     /*---------------------------Header----------------------------*/
@@ -957,6 +949,8 @@ footer {
 
     header .cabecalhoInferior {
         padding: 3% 7%;
+        display: flex;
+        justify-content: space-between;
     }
 
     header .cabecalhoInferior img {
@@ -969,9 +963,13 @@ footer {
         width: 60%;
         margin-left: -5%;
     }
+    .d-flex{
+        gap: 0px !important;
+    }
 
     .pesquisaCentral input {
         padding: 5% 2.5% 5% 5%;
+        height: 35px;
     }
 
     .pesquisaCentral button img {
@@ -1096,10 +1094,6 @@ footer {
     /*---------------------------Footer----------------------------*/
 }
 
-
-
-
-
 /*--------------------------------------------------------------------------------*/
 @media (min-width: 520px) and (max-width: 630px) {
     /*---------------------------Header----------------------------*/
@@ -1131,6 +1125,7 @@ footer {
         width: 60%;
         margin-left: -5%;
     }
+
 
     .pesquisaCentral input {
         padding: 5% 2.5% 5% 5%;
@@ -1259,13 +1254,6 @@ footer {
 
     /*---------------------------Footer----------------------------*/
 }
-
-
-
-
-
-
-
 
 
 
@@ -1429,22 +1417,10 @@ footer {
     /*---------------------------Footer----------------------------*/
 }
 
-
-
-
-
-
-
 /*--------------------------------------------------------------------------------*/
 @media (min-height: 780px) and (max-height: 820px) {
     /* Para que isso, bro */
 }
-
-
-
-
-
-
 
 /*--------------------------------------------------------------------------------*/
 @media (min-width: 760px) and (max-width: 799px) {
@@ -1460,5 +1436,9 @@ footer {
         top: 85px !important;
     }
 }
-
+@media (min-width: 1100px){
+    main{
+        margin-top: 20vh;
+    }
+}
 /*---------------------------------------------------Responsividade-----------------------------------------*/

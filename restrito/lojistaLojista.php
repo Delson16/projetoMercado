@@ -2,6 +2,7 @@
 session_start();
 include_once '../validarLojista.php';
 include_once 'conexao.php';
+$conn = pegarConexao('lojista');
 ?>
 
 <?php
