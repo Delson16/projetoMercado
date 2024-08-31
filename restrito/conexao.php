@@ -11,7 +11,6 @@ function pegarConexao($tipoUsuario){
         $password = '7$Lz*R@8e%wX!qGm';
     }
     $dbname = "mercazon";
-
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     if($conn->connect_error){
