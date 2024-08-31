@@ -120,6 +120,9 @@ if (isset($_POST['loginLojista'])) {
 
     include_once "restrito/conexao.php";
 
+    $tipo_usuario = 'lojista';
+    $conn = pegarConexao($tipo_usuario);
+
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $sql = "SELECT id, senha, nome FROM lojistas WHERE email = '$email'";
     $resultado = $conn->query($sql);
@@ -255,6 +258,8 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
                     echo "<a href='restrito/usuario.php'> <img src='$imagemLogin' class='loginButton' data-bs-toggle='modal'> </a>";
                 } else if (isset($_SESSION['idLojista'])) {
                     include_once "restrito/conexao.php";
+                    $tipo_usuario = 'lojista';
+                    $conn = pegarConexao($tipo_usuario);
                     $id = $_SESSION['idLojista'];
                     $sql = "SELECT imagem_lojista FROM lojistas WHERE id = $id;";
                     $resultado = $conn->query($sql);
@@ -825,69 +830,13 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
             <?php
 
             include_once "restrito/conexao.php";
+            include_once "scripts.php";
 
             $sql = "SELECT p.id, p.contador_cliques, p.nome, p.preco, p.imagem, l.nome_estabelecimento
             FROM produtos AS p JOIN lojistas as l ON p.id_lojista = l.id ORDER BY contador_cliques DESC LIMIT 8;";
+            gerarCard($sql, 'usuario')
 
-            $resultado = $conn->query($sql);
 
-            while ($linha = mysqli_fetch_assoc($resultado)) {
-
-                $nome = $linha['nome'];
-                $imagem = $linha['imagem'];
-                $preco = $linha['preco'];
-                $nomeLoja = $linha['nome_estabelecimento'];
-                $id = $linha['id'];
-
-                echo "
-                <div class='card' onclick=\"location.href='produto.php?id=$id'\">
-                    <div class='parteSuperiorCard'>
-                        <img src='img/$imagem' alt='$nome'>
-                        <form target='hiddenFrame' id='favoritar' action='restrito/favoritar.php' method='POST' onsubmit='event.stopPropagation()'>
-                            <input type='hidden' name='idFavorito' value='$id'>
-                            <input type='hidden' name='user' value='$user'>";
-
-                if (isset($_SESSION['idUser'])) {
-                    $id_usuario = $_SESSION['idUser'];
-                    $sql = "SELECT id_produto FROM usuario_favorita_produto WHERE id_usuario = $id_usuario AND id_produto = $id;";
-                    $resultado2 = $conn->query($sql);
-                    $numLinha = mysqli_num_rows($resultado2);
-                    if ($numLinha === 1) {
-                        echo "<button aria-label='Adicionar aos favoritos' type='submit' value='Favoritar' name='favoritoSubmit'>
-                                            <svg class='favoritaCoracao coracaoFavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' class='bi bi-heart-fill' viewBox='0 0 16 16'>
-                                            <path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314' />
-                                            </svg>
-                                        </button>";
-                    } else {
-                        echo "<button type='submit' value='Favoritar' name='favoritoSubmit' onclick='event.stopPropagation()'>
-                                        <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='#004F90' class'' bi bi-heart' viewBox='0 0 16 16'>
-                                            <path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                                        </svg>
-                                             <path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314' />
-                                        </svg>
-                                    </button>";
-                    }
-
-                } else {
-                    echo "<button aria-label='Adicionar aos favoritos' type='submit' value='Favoritar' name='favoritoSubmit' onclick='event.stopPropagation()'>
-                                <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='#004F90' class'' bi bi-heart' viewBox='0 0 16 16'>
-                                    <path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                                </svg>
-                                     <path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314' />
-                                </svg>
-                            </button>";
-                }
-                echo "
-                        </form>
-                    </div>
-                    <div class='parteInferiorCard'>
-                        <h4>$nome</h4>
-                        <h6>$nomeLoja</h6>
-                        <h6>R$ $preco</h6>
-                        <a class='btn-p4' href=''>Ver Produto</a>
-                    </div>
-                </div>";
-            }
 
             ?>
             <iframe name="hiddenFrame" style="display:none;"></iframe> <!-- Iframe invisível -->

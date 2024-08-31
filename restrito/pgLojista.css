@@ -253,6 +253,24 @@ main .localizacaoContato .btn-p3:hover{
 }
 
 /*-------------------------------Modal-Adicionar-----------------------------*/
+
+/*---------------------------Modal Edita produto--------------------*/
+
+.editar {
+  cursor: pointer;
+  z-index: 9 !important;
+  width: 13%;
+  height: 13%;
+  left: 0;
+}
+.editar:hover {
+  transform: scale(1.25);
+  transition: 0.25s;
+}
+
+
+
+/*---------------------------Modal Edita produto--------------------*/
 /*-------------------------------Modal-Excluir-----------------------------*/
 
 #formExcluir .d-flex{
@@ -393,56 +411,28 @@ main .localizacaoContato .btn-p3:hover{
     width: 100px !important; /*Alterar para responsividade*/
   }
 
-  main .containerDasInfoIniciais a {
-    margin-top: 30%;
+  main .containerDasInfoIniciais .botoesLojista{
+    position: absolute;
+    top: 0;
     font-size: 0.55rem;
     transition: 0.25s;
     transform: scale(0.8);
-  }
 
-  main .containerDasInfoIniciais a:hover {
+  }
+  
+  main .containerDasInfoIniciais .botoesLojista a:hover {
     transform: scale(0.9);
     transition: 0.25s;
   }
 
-  main .containerDasInfoIniciais .editar {
-    display: flex;
-    align-items: center !important;
-    width: 70px;
-    height: 24px;
-    cursor: pointer;
+  main .containerDasInfoIniciais .btnEdita a{
+    font-size: 0.55rem;
     transition: 0.25s;
-    position: absolute;
-    top: 10%;
-    right: 0;
-    margin: 2%;
-    padding: 1%;
-    background-color: var(--cor0);
-    border-radius: 10px;
-  }
-  main .containerDasInfoIniciais .editar img {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border: none;
-    border-radius: 0;
-    transform: rotate(-10deg);
-    filter: invert(1);
-    left: 10%;
+    transform: scale(0.8);
+    text-decoration: none;
   }
 
-  .editar p {
-    left: 40%;
-    bottom: -55%;
-    position: absolute;
-    font-size: 0.8rem;
-    color: white;
-  }
 
-  .editar:hover {
-    transform: scale(1.03);
-    transition: 0.25s;
-  }
   main h1:nth-child(2) {
     width: 38%;
     margin-top: 10%;

@@ -4,6 +4,9 @@ include 'restrito/conexao.php';
 
 $idProduto = $_GET['id'];
 $sql = "SELECT * FROM produtos  WHERE id = '$idProduto'";
+$tipo_usuario = 'usuario';
+$conn = pegarConexao($tipo_usuario);
+
 $resultado = $conn->query($sql);
 
 if ($resultado->num_rows > 0) {

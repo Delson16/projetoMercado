@@ -2,8 +2,9 @@
 session_start();
 include_once '../validarLojista.php';
 include_once 'conexao.php';
-$conn = pegarConexao('lojista');
-?>
+include '../scripts.php'
+
+    ?>
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -42,6 +43,9 @@ $sql = "SELECT *
         LIMIT $offset, $num_items_por_pagina;
 ";
 
+$tipo_usuario = 'lojista';
+$conn = pegarConexao($tipo_usuario);
+
 $result = $conn->query($sql);
 
 // Consulta SQl para aparecer os elementos favoritos no header
@@ -75,11 +79,12 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
 <html lang="pt-br">
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-        <link rel="shortcut icon" href="logoAmareloEscuro.png">
+    <link rel="shortcut icon" href="logoAmareloEscuro.png">
     <link rel="stylesheet" href="../pgPadrao.css">
     <link rel="stylesheet" href="pgLojista.css">
     <meta charset="UTF-8">
@@ -90,21 +95,21 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
 
 <!-- Códigos de acessibilidade -->
 <script src="https://cdn.userway.org/widget.js" data-account="kCDHqw9ltL"></script>
-  <div vw class="enabled">
+<div vw class="enabled">
     <div vw-access-button class="active"></div>
     <div vw-plugin-wrapper>
-      <div class="vw-plugin-top-wrapper"></div>
+        <div class="vw-plugin-top-wrapper"></div>
     </div>
-  </div>
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-  <script>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
     new window.VLibras.Widget('https://vlibras.gov.br/app');
-  </script>
+</script>
 
 <body>
 
 
-<header>
+    <header>
         <nav class="cabecalhoSuperior">
             <div class="d-flex">
                 <a href="../guiaDoLojista.php">Guia do lojista</a>
@@ -212,35 +217,45 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                         <input type="hidden" name="idUsuario" value=" <?php echo "$user" ?>">
                         <div class="mb-3">
                             <label for="nomeUsuario" class="form-label">Nome:</label>
-                            <input type="text" class="form-control" id="nomeUsuario" name="nomeUsuario" value="<?php echo "$nomeUsuario" ?>" required>
+                            <input type="text" class="form-control" id="nomeUsuario" name="nomeUsuario"
+                                value="<?php echo "$nomeUsuario" ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="emailUsuario" class="form-label">Email:</label>
-                            <input type="text" class="form-control" id="emailUsuario" value="<?php echo "$emailUsuario" ?>" name="emailUsuario" required>
+                            <input type="text" class="form-control" id="emailUsuario"
+                                value="<?php echo "$emailUsuario" ?>" name="emailUsuario" required>
                         </div>
                         <div class="mb-3">
                             <label for="enderecoUsuario" class="form-label">Endereço:</label>
-                            <input type="text" class="form-control" id="enderecoUsuario" value="<?php echo "$enderecoUsuario" ?>" name="enderecoUsuario" required>
+                            <input type="text" class="form-control" id="enderecoUsuario"
+                                value="<?php echo "$enderecoUsuario" ?>" name="enderecoUsuario" required>
                         </div>
                         <div class="mb-3">
                             <label for="telefone" class="form-label">Telefone:</label>
-                            <input type="text" class="form-control" id="telefone" value="<?php echo "$telefone" ?>" name="telefone" required>
+                            <input type="text" class="form-control" id="telefone" value="<?php echo "$telefone" ?>"
+                                name="telefone" required>
                         </div>
                         <div class="mb-3">
                             <label for="nomeEstabelecimento" class="form-label">Nome Estabelecimento:</label>
-                            <input type="text" class="form-control" id="nomeEstabelecimento" value="<?php echo "$nomeEstabelecimento" ?>" name="nomeEstabelecimento" required>
+                            <input type="text" class="form-control" id="nomeEstabelecimento"
+                                value="<?php echo "$nomeEstabelecimento" ?>" name="nomeEstabelecimento" required>
                         </div>
                         <div class="mb-3 d-flex" id="selecionaImagem">
                             <label for="imageminput" class="form-label">Selecione sua foto:</label>
-                            <input type="file" id="imagemInput" class="form-control" name="imagem" accept="image/*" style="display: none;">
-                            <img src="../img/<?php echo "$imagemUsuario" ?>" alt="" id="imagemProduto" onclick="document.getElementById('imagemInput').click();">
+                            <input type="file" id="imagemInput" class="form-control" name="imagem" accept="image/*"
+                                style="display: none;">
+                            <img src="../img/<?php echo "$imagemUsuario" ?>" alt="" id="imagemProduto"
+                                onclick="document.getElementById('imagemInput').click();">
                             <br>
                             <br>
                         </div>
                         <div class="mb-3 d-flex" id="selecionaImagem">
-                            <label for="imagemInput2" class="form-label">Selecione a imagem do seu estabelecimento:</label>
-                            <input type="file" id="imagemInput2" class="form-control" name="imagem_estabelecimento" accept="image/*" style="display: none;">
-                            <img src="../img/<?php echo "$imagemEstabelecimento" ?>" alt="" id="imagemProduto2" onclick="document.getElementById('imagemInput2').click();">
+                            <label for="imagemInput2" class="form-label">Selecione a imagem do seu
+                                estabelecimento:</label>
+                            <input type="file" id="imagemInput2" class="form-control" name="imagem_estabelecimento"
+                                accept="image/*" style="display: none;">
+                            <img src="../img/<?php echo "$imagemEstabelecimento" ?>" alt="" id="imagemProduto2"
+                                onclick="document.getElementById('imagemInput2').click();">
                             <br>
                             <br>
                         </div>
@@ -260,7 +275,8 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
     <!-- Modal de cadastro de produto -->
 
 
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -316,23 +332,27 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
 
     <!-- Modal de edição de produto -->
 
-    <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Modal de edição de produto -->
+
+    <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cadastro</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edicão</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <form action="editaProduto.php" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="id" id="idProduto" value="">
                         <div class="mb-3">
                             <label for="nome" class="form-label">Produto ou Serviço:</label>
-                            <input type="text" class="form-control" id="nome" name="nome" required>
+                            <input type="text" class="form-control" id="nomeProdutoEdicao" name="nome" required>
                         </div>
                         <div class="mb-3">
                             <label for="categoria" class="form-label">Categoria:</label>
                             <select class="form-select" id="categoria" name="categoria" required>
+                                <option id="categoriaProduto"></option>
                                 <option value="Eletronicos">Eletrônicos</option>
                                 <option value="Roupas">Roupas</option>
                                 <option value="Eletrodomesticos">Eletrodomésticos</option>
@@ -340,15 +360,17 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                         </div>
                         <div class="mb-3">
                             <label for="preco" class="form-label">Preço:</label>
-                            <input type="number" class="form-control" id="preco" name="preco" required>
+                            <input value="" type="number" class="form-control" id="precoProduto" name="preco" required>
                         </div>
                         <div class="mb-3">
                             <label for="descricao" class="form-label">Descrição:</label>
-                            <input type="text" class="form-control" id="descricao" name="descricao" required>
+                            <input value="" type="text" class="form-control" id="descricaoProduto" name="descricao"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="imagem" class="form-label">Imagem:</label>
-                            <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*" required>
+                            <input value="" type="file" class="form-control" id="imagem" name="imagem" accept="image/*"
+                                required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -359,6 +381,8 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
             </div>
         </div>
     </div>
+
+    <!-- Modal de edição de produto -->
 
     <!-- Modal de edição de produto -->
 
@@ -389,14 +413,14 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
     <!-- Começo Do Conteúdo-->
     <main>
 
-    <div class="fachadaLoja">
-        <img src="../img/<?php echo "$imagemEstabelecimento" ?>" alt="">
-    </div>
-        
+        <div class="fachadaLoja">
+            <img src="../img/<?php echo "$imagemEstabelecimento" ?>" alt="">
+        </div>
+
         <div>
             <h1>Informações e Configurações</h1>
-            <div class="containerDasInfoIniciais">
-            <?php $imagemEstabelecimento ?>
+            <div style="border: 1px solid red" class="containerDasInfoIniciais">
+                <?php $imagemEstabelecimento ?>
 
                 <div class="d-flex" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <?php
@@ -412,19 +436,97 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                     </div>
                 </div>
 
-                <a style="margin-top: -10%" class="btn btn-danger" href="../logout.php">Deslogar</a>
+                <div style="position: absolute; top: 0; right: 0;" class="botoesLojista">
+                    <a style="margin-left: -10%" href="../logout.php">
+                        <svg fill="#000000" height="40px" width="40px" version="1.1" id="Capa_1"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 384.971 384.971" xml:space="preserve" data-darkreader-inline-fill=""
+                            style="--darkreader-inline-fill: #000000;" transform="matrix(-1, 0, 0, 1, 0, 0)">
+                            <g id="SVGRepo_bgCa#ff0000#ff0000ie#ff0000" st#ff0000oke-width="0"></g>
+                            <g id="SVGRepo_t#ff0000ace#ff0000Ca#ff0000#ff0000ie#ff0000"
+                                st#ff0000oke-linecap="#ff0000ound" st#ff0000oke-linejoin="#ff0000ound"></g>
+                            <g id="SVGRepo_iconCa#ff0000#ff0000ie#ff0000">
+                                <g>
+                                    <g id="Sign_Out">
+                                        <path
+                                            d="M180.455,360.91H24.061V24.061h156.394c6.641,0,12.03-5.39,12.03-12.03s-5.39-12.03-12.03-12.03H12.03 C5.39,0.001,0,5.39,0,12.031V372.94c0,6.641,5.39,12.03,12.03,12.03h168.424c6.641,0,12.03-5.39,12.03-12.03 C192.485,366.299,187.095,360.91,180.455,360.91z">
+                                        </path>
+                                        <path
+                                            d="M381.481,184.088l-83.009-84.2c-4.704-4.752-12.319-4.74-17.011,0c-4.704,4.74-4.704,12.439,0,17.179l62.558,63.46H96.279 c-6.641,0-12.03,5.438-12.03,12.151c0,6.713,5.39,12.151,12.03,12.151h247.74l-62.558,63.46c-4.704,4.752-4.704,12.439,0,17.179 c4.704,4.752,12.319,4.752,17.011,0l82.997-84.2C386.113,196.588,386.161,188.756,381.481,184.088z">
+                                        </path>
+                                    </g>
+                        </svg>
+                    </a>
+                    <a style="margin-left: -10%" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar
+                        <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"
+                            enable-background="new 0 0 64 64" xml:space="preserve" fill="#000000"
+                            data-darkreader-inline-fill="" style="--darkreader-inline-fill: #000000;">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <g>
+                                    <path fill="#F9EBB2"
+                                        d="M3.001,61.999c-0.553,0-1.001-0.446-1-0.999l0.001-13.141L16.143,62L3.001,61.999z"
+                                        data-darkreader-inline-fill="" style="--darkreader-inline-fill: #433605;">
+                                    </path>
+                                    <path fill="#F76D57"
+                                        d="M61.414,16.729l-4.259,4.259L43.013,6.845l4.258-4.257c0.782-0.782,2.049-0.782,2.829-0.002L61.414,13.9 C62.195,14.682,62.194,15.947,61.414,16.729z"
+                                        data-darkreader-inline-fill="" style="--darkreader-inline-fill: #8e1a07;">
+                                    </path>
+                                    <g>
+                                        <rect x="37.256" y="14.744"
+                                            transform="matrix(0.7071 0.7071 -0.7071 0.7071 25.6812 -28.5106)"
+                                            fill="#F9EBB2" width="20.001" height="4" data-darkreader-inline-fill=""
+                                            style="--darkreader-inline-fill: #433605;"></rect>
+                                    </g>
+                                    <g>
+                                        <rect x="-1.848" y="28.74"
+                                            transform="matrix(0.7071 -0.7071 0.7071 0.7071 -15.6016 24.8148)"
+                                            fill="#45AAB8" width="48.002" height="5.001" data-darkreader-inline-fill=""
+                                            style="--darkreader-inline-fill: #34818c;"></rect>
+                                        <rect x="8.76" y="39.348"
+                                            transform="matrix(0.7071 -0.7071 0.7071 0.7071 -19.9956 35.4215)"
+                                            fill="#45AAB8" width="48" height="4.999" data-darkreader-inline-fill=""
+                                            style="--darkreader-inline-fill: #34818c;"></rect>
+                                        <rect x="3.456" y="33.544"
+                                            transform="matrix(0.7071 -0.7071 0.7071 0.7071 -17.7985 30.1183)"
+                                            fill="#45AAB8" width="48.001" height="5.999" data-darkreader-inline-fill=""
+                                            style="--darkreader-inline-fill: #34818c;"></rect>
+                                    </g>
+                                    <rect x="-1.847" y="28.74"
+                                        transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 59.9084 37.6651)" opacity="0.2"
+                                        fill="#231F20" width="48.001" height="5" data-darkreader-inline-fill=""
+                                        style="--darkreader-inline-fill: #181a1b;"></rect>
+                                    <rect x="30.26" y="17.847"
+                                        transform="matrix(0.7071 0.7071 -0.7071 0.7071 39.1859 -10.9078)" opacity="0.2"
+                                        fill="#231F20" width="4.999" height="48" data-darkreader-inline-fill=""
+                                        style="--darkreader-inline-fill: #181a1b;"></rect>
+                                    <path fill="#394240"
+                                        d="M62.828,12.486L51.514,1.172c-1.562-1.562-4.093-1.562-5.657,0.001c0,0-44.646,44.646-45.255,45.255 C-0.006,47.035,0,48,0,48l0.001,13.999c0,1.105,0.896,2,1.999,2.001h14c0,0,0.963,0.008,1.572-0.602s45.256-45.257,45.256-45.257 C64.392,16.579,64.392,14.05,62.828,12.486z M2.001,61v-1.583l2.582,2.582H3.001C2.448,61.999,2,61.553,2.001,61z M7.411,62 l-5.41-5.41l0.001-8.73L16.143,62H7.411z M52.912,25.23L38.771,11.088l-1.414,1.414l3.535,3.535L6.951,49.979l1.414,1.414 l33.94-33.941l4.243,4.243l-33.941,33.94l1.414,1.415l33.941-33.94l3.535,3.535L17.557,60.586L3.414,46.443L41.599,8.259 l14.143,14.143L52.912,25.23z M61.414,16.729l-4.259,4.259L43.013,6.845l4.258-4.257c0.782-0.782,2.049-0.782,2.829-0.002 L61.414,13.9C62.195,14.682,62.194,15.947,61.414,16.729z"
+                                        data-darkreader-inline-fill="" style="--darkreader-inline-fill: #2c2f31;">
+                                    </path>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+
 
 
             </div>
         </div>
-        
+
         <div class="localizacaoContato">
             <div class="contatoInfo">
                 <h2>Contatos</h2>
                 <h5><?php echo "$emailUsuario" ?></h5>
-                <a class="contatoWhats btn-p3" href="https://api.whatsapp.com/send/?phone=55<?php echo "$telefone" ?>&text&type=phone_number&app_absent=0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4693ce" class="bi bi-whatsapp" viewBox="0 0 16 16">
-                    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                <a class="contatoWhats btn-p3"
+                    href="https://api.whatsapp.com/send/?phone=55<?php echo "$telefone" ?>&text&type=phone_number&app_absent=0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4693ce" class="bi bi-whatsapp"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
                     </svg>
                     <h3><?php echo "$telefone" ?></h3>
                 </a>
@@ -435,61 +537,31 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                 <h5><?php echo "$enderecoUsuario" ?></h5>
             </div>
 
-            <div> <!--https://www.google.com/maps/dir//Av.+Adelino+Ferreira+Jardim+                 Sem endereco do usuario-->
+            <div>
+                <!--https://www.google.com/maps/dir//Av.+Adelino+Ferreira+Jardim+                 Sem endereco do usuario-->
                 <!--https://www.google.com/maps/dir/Avenida+Farroupilha,+4545/Av.+Adelino+Ferreira+Jardim             Com endereco do usuario-->
-                <a href="<?php echo "https://www.google.com/maps/dir//$enderecoUsuario"  ?>">
+                <a href="<?php echo "https://www.google.com/maps/dir//$enderecoUsuario" ?>">
                     <img src="../img/imgPgLojista/aa.png" alt="">
                 </a>
             </div>
 
         </div>
 
-        
+
         <h1 class="produtos">Seus Produtos</h1>
     </main>
 
     <div class="containerCards">
         <button type="button" class="adicionarItem" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             <svg width="200px" height="200px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 12H18M12 6V18" stroke="#f4cb00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M6 12H18M12 6V18" stroke="#f4cb00" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
             </svg>
             <h2>Adicionar Produto</h2>
         </button>
         <?php
-
-        while ($linha = mysqli_fetch_assoc($result)) {
-            $nome = $linha['nome'];
-            $imagem = $linha['imagem'];
-            $preco = $linha['preco'];
-            $categoria = $linha['categoria'];
-            $id = $linha['id'];
-            echo "
-    <div class='card' onclick=\"location.href='../produto.php?id=$id'\">
-            <div class='parteSuperiorCard'>
-            <img src='../img/$imagem' alt='$nome'>
-                <input type='hidden' name='idFavorito' value='$id'>
-                <input type='hidden' name='nomeProduto' data-nome='$nome'>
-                <input type='hidden' name='nomeCategoria' data-nome='$nome'>
-                <input type='hidden' name='nomeProduto' data-nome='$nome'>
-                <input type='hidden' name='nomeProduto' data-nome='$nome'>
-
-                <input type='hidden' name='user' value='$user'>
-                <button data-bs-toggle='modal' data-bs-target='#exampleModal3' >
-                    <svg data-id='$id' data-nome='$nome' class='favoritaCoracao excluir coracaoFavoritado' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' class='bi bi-trash3-fill' viewBox='0 0 16 16'>
-                    <path d='M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5'/>
-                    </svg>
-                </button>
-
-                
-                </div>
-                <div class='parteInferiorCard'>
-                <h4>$nome</h4>
-                <h6>R$ $preco</h6>
-                <a class='btn-p4' href=''>Ver Produto</a>
-                </div>
-                </div>";
-        }
-        ?>
+        gerarCard($result, $tipo_usuario)
+            ?>
     </div>
 
     <!-- Paginação -->
@@ -564,8 +636,8 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
     <script>
         // Script para manipulação de botões de exclusão
         var buttonsExcluir = document.querySelectorAll('.excluir');
-        buttonsExcluir.forEach(function(button) {
-            button.addEventListener('click', function() {
+        buttonsExcluir.forEach(function (button) {
+            button.addEventListener('click', function () {
                 var id = button.getAttribute('data-id');
                 var nome = button.getAttribute('data-nome');
                 document.getElementById('idProduto').value = id;
@@ -574,10 +646,42 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
         });
     </script>
 
+    <script>
+        // Script para aparecer as ionformações durante a exclusão
+        var buttonsExcluir = document.querySelectorAll('.excluir');
+        buttonsExcluir.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var id = button.getAttribute('data-id');
+                var nome = button.getAttribute('data-nome');
+                document.getElementById('idProduto').value = id;
+                document.getElementById('nomeProduto').innerText = nome;
+            });
+        });
+
+        // Script para aparecer as informacoes na edição
+        var buttonsEditar = document.querySelectorAll('.editar');
+        buttonsEditar.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var id = button.getAttribute('data-id');
+                var nome = button.getAttribute('data-nome');
+                var categoria = button.getAttribute('data-categoria');
+                var preco = button.getAttribute('data-preco');
+                var descricao = button.getAttribute('data-descricao');
+                document.getElementById('idProduto').value = id;
+                document.getElementById('nomeProdutoEdicao').value = nome;
+                document.getElementById('categoriaProduto').textContent = categoria;
+                document.getElementById('precoProduto').value = preco;
+                document.getElementById('descricaoProduto').value = descricao;
+            });
+        });
+    </script>
+
     <iframe name="hiddenFrame" style="display:none;"></iframe> <!-- Iframe invisível -->
 
     <script src="scriptLojista.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
