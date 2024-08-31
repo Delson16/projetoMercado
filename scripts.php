@@ -386,7 +386,6 @@ viewBox='0 0 500 500'
                 $nome = $linha['nome'];
                 $imagem = $linha['imagem'];
                 $preco = $linha['preco'];
-                $nomeLoja = $linha['nome_estabelecimento'];
                 $id = $linha['id'];
 
 
@@ -432,7 +431,6 @@ viewBox='0 0 500 500'
                     </div>
                     <div class='parteInferiorCard'>
                         <h4>$nome</h4>
-                        <h6>$nomeLoja</h6>
                         <h6>R$ $preco</h6>
                         <a class='btn-p4' href=''>Ver Produto</a>
                     </div>

@@ -1,5 +1,6 @@
 <?php
 include 'restrito/conexao.php';
+include 'scripts.php';
 
 
 $idProduto = $_GET['id'];
@@ -13,11 +14,11 @@ if ($resultado->num_rows > 0) {
     $linha = $resultado->fetch_assoc();
     $nome = $linha['nome'];
     $imagem = $linha['imagem'];
+    $imagem2 = $linha['imagem2'];
+    $imagem3 = $linha['imagem3'];
     $preco = $linha['preco'];
     $categoria = $linha['categoria'];
-    $local = $linha['localizacao'];
     $descricao = $linha['descricao'];
-    $telefone = $linha['telefone'];
     $id_lojista = $linha['id_lojista'];
 
     $lojista = "SELECT * FROM lojistas  WHERE id = '$id_lojista'";
@@ -40,7 +41,7 @@ if ($resultado->num_rows > 0) {
 
 <head>
     <link rel="shortcut icon" href="../img/img pg inicial/logoAmareloEscuro.png" type="image/x-icon">
-    <link rel="stylesheet" href="produtos.css">
+    <link rel="stylesheet" href="produto.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="pgPadrao.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,7 +68,7 @@ if ($resultado->num_rows > 0) {
 </script>
 
 <body>
-    <header>
+<header style="width: 100%">
         <nav class="cabecalhoSuperior">
             <div class="d-flex">
                 <a href="guiaDoLojista.php">Guia do lojista</a>
@@ -78,83 +79,22 @@ if ($resultado->num_rows > 0) {
 
         <nav class="cabecalhoInferior">
             <a class="logoMercazon" href="index.php">
-                <img src="img/img pg inicial/logoAmareloEscuro.png" alt="Logo Mercazon" data-aos="zoom-in">
+                <img src="img/icons/logoAmareloEscuro.png" alt="Logo Mercazon" data-aos="zoom-in">
             </a>
 
-            <form action="produtosBusca.php" class="pesquisaCentral" method="POST">
-                <input type="text" placeholder="Busque Seus Produtos" name="nome">
-                <button type="submit" name="filtro" value="preco"><img src="img/img pg padrao/lupa.png"
-                        alt="Lupa de pesquisa"></button>
+            <form action="#" class="filtroNome pesquisaCentral" id="formNome">
+                <input type="text" placeholder="Busque Seus Produtos" name="nome" id="buscarInput">
+                <button type="button" onclick="filtrar()"><img src="img/icons/lupa.png" alt="Lupa de pesquisa"></button>
             </form>
 
 
             <div class="d-flex">
-                <?php if (isset($_SESSION['idUser'])) {
-                    include_once "restrito/conexao.php";
-                    $id = $_SESSION['idUser'];
-                    $sql = "SELECT imagem_usuario FROM usuarios WHERE id = $id;";
-                    $resultado = $conn->query($sql);
-                    $linha = mysqli_fetch_assoc($resultado);
-                    $imagemLogin = $linha['imagem_usuario'] ? ('img/' . $linha['imagem_usuario']) : "imgs/profile.png";
-
-                    echo "<a href='restrito/usuario.php'> <img src='$imagemLogin' class='loginButton' data-bs-toggle='modal'> </a>";
-                } else if (isset($_SESSION['idLojista'])) {
-                    include_once "restrito/conexao.php";
-                    $id = $_SESSION['idLojista'];
-                    $sql = "SELECT imagem_lojista FROM lojistas WHERE id = $id;";
-                    $resultado = $conn->query($sql);
-                    $linha = mysqli_fetch_assoc($resultado);
-                    $imagemLogin = $linha['imagem_lojista'] ? ('img/' . $linha['imagem_lojista']) : "imgs/profile.png";
-
-                    echo "<a href='restrito/lojistaLojista.php'> <img src='$imagemLogin' class='loginButton' data-bs-toggle='modal'> </a>";
-
-                } else {
-                    echo "<img src='imgs/profile.png' class='loginButton' data-bs-toggle='modal' alt='Icon de usuario padrao'
-                    data-bs-target='#exampleModal' style='filter: invert(1);'>";
-
-                } ?>
-
+                <?php imagemPerfilHeader()?>
                 <div class="dropdown">
                     <div aria-label="Adicionar aos favoritos" role="button" src="" alt="Coração de favoritos"
                         class="naoClicado" id="favoritos" data-bs-toggle="dropdown" aria-expanded="false"></div>
                     <ul class="dropdown-menu">
-
-                        <?php
-
-                        if (isset($_SESSION['idUser'])) {
-                            // Consulta SQl para aparecer os elementos favoritos no header
-                            $sqlElementosFavoritosHeader = "SELECT p.id, p.nome, p.preco, p.categoria, p.imagem 
-                                                        FROM produtos AS p
-                                                        JOIN usuario_favorita_produto AS ufp ON p.id = ufp.id_produto
-                                                        WHERE ufp.id_usuario = $user
-                                                        ORDER BY ufp.id DESC
-                                                        LIMIT 3;
-                                                        ";
-                            $resultado = $conn->query($sqlElementosFavoritosHeader);
-
-                            while ($linha = mysqli_fetch_assoc($resultado)) {
-                                $nome = $linha['nome'];
-                                $imagem = $linha['imagem'];
-                                $preco = $linha['preco'];
-                                $categoria = $linha['categoria'];
-                                $id = $linha['id'];
-
-                                echo "
-                                    <li class='produtosNoHeader'><a href='produto.php?id=$id' class='dropdown-item d-flex'> 
-                                    <img src='img/$imagem' alt='$nome'>
-                                    <div class= 'd-flex flex-column justify-content-center'>
-                                    <h6>$nome</h6>
-                                    <h6>R$ $preco</h6>
-                                    </div>
-                                    </a></li>
-                                    ";
-                            }
-                            echo "<li><a class='dropdown-item' href='restrito/usuario.php'>Ver Todos</a></li>";
-                        } else {
-                            echo "<li data-bs-toggle='modal'
-                    data-bs-target='#exampleModal'><a class='dropdown-item' style='cursor: pointer !important;'>Logue-se para ver os favoritos</a></li>";
-                        }
-                        ?>
+                        <?php dropdownHeader() ?>
                     </ul>
                 </div>
             </div>
@@ -369,29 +309,23 @@ if ($resultado->num_rows > 0) {
             <div class="galeria">
                 <div class="imagensLaterais">
                     <img src="img/<?php echo "$imagem" ?>" alt="Produto 1" onclick="changeImage(this)">
-                    <img src="img/<?php echo "$imagem" ?>" alt="Produto 2" onclick="changeImage(this)">
-                    <img src="img/<?php echo "$imagem" ?>" alt="Produto 3" onclick="changeImage(this)">
+                    <img src="img/<?php echo "$imagem2" ?>" alt="Produto 2" onclick="changeImage(this)">
+                    <img src="img/<?php echo "$imagem3" ?>" alt="Produto 3" onclick="changeImage(this)">
                 </div>
                 <div>
                     <img id="imagemPrincipal" src="img/<?php echo "$imagem" ?>" alt="Produto">
                 </div>
             </div>
             <div class="informacoesProduto">
-                <h1><?php echo "$nome" ?></h1>
-                <p>Categoria: <?php echo "$categoria" ?>
-                    <br><br>
-                    Marca: Arno
-                    <br><br>
-                    Condição: <?php echo "$descricao" ?>
-                    <br><br>
-                    Tipo: Ferros de Passar
-                    <br><br>
-                    Voltagem:
-                    127v
-                    <br><br>
-                <h2><?php echo "R$ $preco" ?></h2>
-                </p>
-                <p></p>
+                <div>
+                    <h1><?php echo "$nome" ?></h1>
+                    <p>Categoria: <?php echo "$categoria" ?></p>
+                    <p>Marca: Arno</p>
+                    <p>Condição: <?php echo "$descricao" ?></p>
+                    <p>Tipo: Ferros de Passar</p>
+                    <p>Voltagem: 127v</p>
+                    <h2><?php echo "R$ $preco" ?></h2>
+                </div>
                 <div class="botoesInteresse">
                     <a href="">
                         Eu quero!
@@ -408,12 +342,12 @@ if ($resultado->num_rows > 0) {
         <div class="informacoesVendedor">
             <div class="containerInfoVendedor">
                 <div class="borderBottom">
-                    <a href="https://testemercazon.free.nf/lojistaUsuario.php?id=<?php echo "$id_lojista" ?>"><img
+                    <a href="http://localhost/gabryel/projetoMercado/lojistaUsuario.php?id=<?php echo "$id_lojista" ?>"><img
                             src="img/<?php echo $imgLojista ?>" alt="" height="30px"></a>
                     <div>
                         <h4><?php echo "$nomeLojista" ?></h4>
                         <a style="font-size: 1.15rem;"
-                            href="https://testemercazon.free.nf/lojistaUsuario.php?id=<?php echo "$id_lojista" ?>">Ver
+                        href="http://localhost/gabryel/projetoMercado/lojistaUsuario.php?id=<?php echo "$id_lojista" ?>">Ver
                             Perfil</a>
                     </div>
                 </div>
@@ -464,7 +398,7 @@ if ($resultado->num_rows > 0) {
                     </svg>
                     <div>
                         <h4>Contato</h4>
-                        <h5 href="">51 98634-5174</h5>
+                        <h5><?php echo"$telefone" ?></h5>
                     </div>
                     <a class="whats d-flex"
                         href="https://api.whatsapp.com/send/?phone=<?php echo"$telefone" ?>&text&type=phone_number&app_absent=0">
@@ -497,8 +431,7 @@ if ($resultado->num_rows > 0) {
                 </div>
             </div>
             <div class="mapa" href="">
-                <img src="img/img pg padrao/mapa.PNG" alt=""
-                    onclick="location.href='https:/www.google.com/maps/dir<?php echo $enderecoLojista ?>'">
+                <img src="img/img pg padrao/mapa.PNG" alt="<?php echo $enderecoLojista ?>">
                 <a href="https://www.google.com/maps/dir//<?php echo $enderecoLojista ?>">Como Chegar</a>
             </div>
         </div>
@@ -507,129 +440,14 @@ if ($resultado->num_rows > 0) {
     <article>
         <h2>Você também pode gostar</h2>
         <div class="containerCards" style="padding: 0%;">
-
-            <div class='card' onclick="location.href='produto.html'">
-                <div class='parteSuperiorCard'>
-                    <img src='img/img pg padrao/camisa.webp' alt='$nome'>
-                    <form target='hiddenFrame' id='favoritar' action='restrito/favoritar.php' method='POST'
-                        onsubmit='event.stopPropagation()'>
-
-                        <button aria-label='Adicionar aos favoritos' type='submit' value='Favoritar'
-                            name='favoritoSubmit' onclick='event.stopPropagation()'>
-                            <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg'
-                                width='16' height='16' fill='#004F90' viewBox='0 0 16 16'>
-                                <path
-                                    d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-                <div class='parteInferiorCard'>
-                    <h4>Camisa Suiça Home 2008 M</h4>
-                    <h6>Usados da Leila</h6>
-                    <h4>R$ 150</h6>
-                        <a class='btn-p4' href=''>Ver Produto</a>
-                </div>
-            </div>
-
-            <div class='card' onclick="location.href='produto.html'">
-                <div class='parteSuperiorCard'>
-                    <img src='img/img pg padrao/play.webp' alt='$nome'>
-                    <form target='hiddenFrame' id='favoritar' action='restrito/favoritar.php' method='POST'
-                        onsubmit='event.stopPropagation()'>
-
-                        <button aria-label='Adicionar aos favoritos' type='submit' value='Favoritar'
-                            name='favoritoSubmit' onclick='event.stopPropagation()'>
-                            <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg'
-                                width='16' height='16' fill='#004F90' viewBox='0 0 16 16'>
-                                <path
-                                    d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-                <div class='parteInferiorCard'>
-                    <h4>PS4 com defeito + 1 controle</h4>
-                    <h6>Semi-novos do Luís</h6>
-                    <h4>R$ 800</h6>
-                        <a class='btn-p4' href=''>Ver Produto</a>
-                </div>
-            </div>
-
-            <div class='card' onclick="location.href='produto.html'">
-                <div class='parteSuperiorCard'>
-                    <img src='img/img pg padrao/tenis.webp' alt='$nome'>
-                    <form target='hiddenFrame' id='favoritar' action='restrito/favoritar.php' method='POST'
-                        onsubmit='event.stopPropagation()'>
-
-                        <button aria-label='Adicionar aos favoritos' type='submit' value='Favoritar'
-                            name='favoritoSubmit' onclick='event.stopPropagation()'>
-                            <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg'
-                                width='16' height='16' fill='#004F90' viewBox='0 0 16 16'>
-                                <path
-                                    d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-                <div class='parteInferiorCard'>
-                    <h4>Tênis Asics americano 47</h4>
-                    <h6>Brecho Exclusivo</h6>
-                    <h4>R$ 119,99</h6>
-                        <a class='btn-p4' href=''>Ver Produto</a>
-                </div>
-            </div>
-
-            <div class='card' onclick="location.href='produto.html'">
-                <div class='parteSuperiorCard'>
-                    <img src='img/img pg padrao/guitarra.webp' alt='$nome'>
-                    <form target='hiddenFrame' id='favoritar' action='restrito/favoritar.php' method='POST'
-                        onsubmit='event.stopPropagation()'>
-
-                        <button aria-label='Adicionar aos favoritos' type='submit' value='Favoritar'
-                            name='favoritoSubmit' onclick='event.stopPropagation()'>
-                            <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg'
-                                width='16' height='16' fill='#004F90' viewBox='0 0 16 16'>
-                                <path
-                                    d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-                <div class='parteInferiorCard'>
-                    <h4>Guitarra Music Maker Evo Pro</h4>
-                    <h6>Sound Music</h6>
-                    <h4>R$ 13.500</h6>
-                        <a class='btn-p4' href=''>Ver Produto</a>
-                </div>
-            </div>
-
-            <div class='card' onclick="location.href='produto.html'">
-                <div class='parteSuperiorCard'>
-                    <img src='img/img pg padrao/byke.webp' alt='$nome'>
-                    <form target='hiddenFrame' id='favoritar' action='restrito/favoritar.php' method='POST'
-                        onsubmit='event.stopPropagation()'>
-
-                        <button aria-label='Adicionar aos favoritos' type='submit' value='Favoritar'
-                            name='favoritoSubmit' onclick='event.stopPropagation()'>
-                            <svg class='favoritaCoracao coracaoDesfavoritado' xmlns='http://www.w3.org/2000/svg'
-                                width='16' height='16' fill='#004F90' viewBox='0 0 16 16'>
-                                <path
-                                    d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15' />
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-                <div class='parteInferiorCard'>
-                    <h4>Caloi Strada 56</h4>
-                    <h6>Nine Byke</h6>
-                    <h4>R$ 3000</h6>
-                        <a class='btn-p4' href=''>Ver Produto</a>
-                </div>
-            </div>
-
+            <?php
+            $conn = pegarConexao('usuario');
+            $query = "SELECT * FROM produtos WHERE categoria = 'eletrônico'";
+            $result = $conn->query($query);
+            gerarCard($query, 'usuario');
+             ?>
+                    
         </div>
-
 
         </div>
     </article>

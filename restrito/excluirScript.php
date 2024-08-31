@@ -1,11 +1,11 @@
 <?php
-include "../validar.php";
+include "../validarLojista.php";
 include "conexao.php";
+$conn = pegarConexao('lojista');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
     $nome = $_POST['nome'];
-    $imagem = $_POST['imagemProdutoExclusao'];
     
     $SQL = "DELETE FROM produtos WHERE id = '$id'"; 
 

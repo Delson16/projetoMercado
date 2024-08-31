@@ -1,0 +1,5 @@
+use mercazon;
+
+ALTER TABLE produtos
+ADD COLUMN imagem2 VARCHAR(255),
+ADD COLUMN imagem3 VARCHAR(255);

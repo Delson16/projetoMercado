@@ -301,9 +301,7 @@ header .cabecalhoInferior .filtroNome {
     border-radius: 20px;
 }
 
-input[type='file'] {
-    display: none;
-}
+
 
 form {
     display: flex;

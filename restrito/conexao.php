@@ -4,11 +4,11 @@ function pegarConexao($tipoUsuario){
     $servername = "localhost";
     
     if($tipoUsuario === 'usuario'){
-        $username = 'usuario';
-        $password = 'F7!vR$4x^Tp9@aJq';
+        $username = 'root';
+        $password = '';
     } else if ($tipoUsuario === 'lojista'){
-        $username = 'lojista';
-        $password = '7$Lz*R@8e%wX!qGm';
+        $username = 'root';
+        $password = '';
     }
     $dbname = "mercazon";
     $conn = new mysqli($servername, $username, $password, $dbname);

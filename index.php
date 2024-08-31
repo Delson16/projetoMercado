@@ -258,8 +258,7 @@ if (isset($_POST['cadastroLojistaSubmit'])) {
                     echo "<a href='restrito/usuario.php'> <img src='$imagemLogin' class='loginButton' data-bs-toggle='modal'> </a>";
                 } else if (isset($_SESSION['idLojista'])) {
                     include_once "restrito/conexao.php";
-                    $tipo_usuario = 'lojista';
-                    $conn = pegarConexao($tipo_usuario);
+                    $conn = pegarConexao('lojista');
                     $id = $_SESSION['idLojista'];
                     $sql = "SELECT imagem_lojista FROM lojistas WHERE id = $id;";
                     $resultado = $conn->query($sql);

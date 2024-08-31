@@ -2,29 +2,48 @@
 session_start();
 include_once '../validarLojista.php';
 include_once 'conexao.php';
-include '../scripts.php'
+include '../scripts.php';
 
     ?>
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['nome']) && isset($_POST['categoria']) && isset($_POST['preco']) && isset($_FILES['imagem'])) {
+    $conn = pegarConexao('lojista');
+    if (
+        isset($_POST['nome']) && 
+        isset($_POST['categoria']) && 
+        isset($_POST['preco']) && 
+        isset($_FILES['imagem']) && 
+        isset($_FILES['imagem2']) && 
+        isset($_FILES['imagem3'])
+    ) {
         $nome = clear($conn, $_POST['nome']);
         $categoria = clear($conn, $_POST['categoria']);
         $preco = clear($conn, $_POST['preco']);
         $descricao = clear($conn, $_POST['descricao']);
         $imagemEstabelecimento = clear($conn, $_POST['imagemEmpresa']);
 
-        $nomeFoto = salvarFoto($_FILES['imagem'], '../img/');
-        if ($nomeFoto == 1) {
-            echo "arquivo no formato incorreto ou muito grande";
+        $imagens = ['imagem', 'imagem2', 'imagem3'];
+        $nomesFotos = [];
+
+        foreach ($imagens as $imagem) {
+            $nomeFoto = salvarFoto($_FILES[$imagem], '../img/');
+            if ($nomeFoto == 1) {
+                echo "arquivo no formato incorreto ou muito grande ($imagem)";
+                exit;
+            } elseif ($nomeFoto == 0) {
+                echo "erro no upload de arquivo ($imagem)";
+                exit;
+            }
+            $nomesFotos[] = $nomeFoto;
         }
-        if ($nomeFoto == 0) {
-            echo "erro no upload de arquivo";
-        } else {
-            $SQL = "INSERT INTO produtos (nome, preco,categoria , imagem, id_lojista, descricao) VALUES ('$nome', '$preco','$categoria' , '$nomeFoto', '$user', '$descricao')";
-            mysqli_query($conn, $SQL);
-        }
+
+        // Insere os dados na tabela de produtos
+        $SQL = "INSERT INTO produtos (nome, preco, categoria, imagem, imagem2, imagem3, id_lojista, descricao) 
+                VALUES ('$nome', '$preco', '$categoria', '{$nomesFotos[0]}', '{$nomesFotos[1]}', '{$nomesFotos[2]}', '$user', '$descricao')";
+        mysqli_query($conn, $SQL);
+    } else {
+        echo "Dados incompletos!";
     }
 }
 ?>
@@ -315,8 +334,16 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                             <input type="text" class="form-control" id="descricao" name="descricao" required>
                         </div>
                         <div class="mb-3">
-                            <label for="imagem" class="form-label">Imagem:</label>
-                            <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*" required>
+                            <label for="imagem" class="form-label">Imagem Principal:</label>
+                            <input type="file" class="form-control" class="imagem" name="imagem" accept="image/*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagem" class="form-label">Imagem Complementar:</label>
+                            <input type="file" class="form-control" class="imagem" name="imagem2" accept="image/*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagem" class="form-label">Imagem Complementar:</label>
+                            <input type="file" class="form-control" class="imagem" name="imagem3" accept="image/*" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -398,9 +425,10 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                 <div class="modal-body">
                     <form action="excluirScript.php" method="post" id="formExcluir" class="">
                         <h2>Deseja Excluir <b id="nomeProduto"></b>?</h2>
+                        <h2>Deseja Excluir <b id="idProduto"></b>?</h2>
                         <div class="d-flex">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
-                            <input type="hidden" name="id" id="idProduto" value="">
+                            <input type="text" name="id" id="idProduto" value="">
                             <input style="width: 40%;" type="submit" class="btn btn-danger" value="Sim">
                         </div>
                     </form>
@@ -634,19 +662,6 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
 
 
     <script>
-        // Script para manipulação de botões de exclusão
-        var buttonsExcluir = document.querySelectorAll('.excluir');
-        buttonsExcluir.forEach(function (button) {
-            button.addEventListener('click', function () {
-                var id = button.getAttribute('data-id');
-                var nome = button.getAttribute('data-nome');
-                document.getElementById('idProduto').value = id;
-                document.getElementById('nomeProduto').innerText = nome;
-            });
-        });
-    </script>
-
-    <script>
         // Script para aparecer as ionformações durante a exclusão
         var buttonsExcluir = document.querySelectorAll('.excluir');
         buttonsExcluir.forEach(function (button) {
@@ -654,6 +669,7 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                 var id = button.getAttribute('data-id');
                 var nome = button.getAttribute('data-nome');
                 document.getElementById('idProduto').value = id;
+                document.getElementById('idProduto').innerText = id;
                 document.getElementById('nomeProduto').innerText = nome;
             });
         });
