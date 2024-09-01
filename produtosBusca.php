@@ -355,7 +355,7 @@ session_start();
             $sqlContadora = $sqlContadora . "$pesquisarNome preco BETWEEN $precoMenor AND $precoMaior;";
 
             // Trabalhar mais na função. fazer um parâmetro para que opere dentro e fora do restrito. Também rever outras questões como favorito e funções específicas para usuários específicos (usuario/lojista)
-            gerarCard($sql);
+            gerarCard($sql, 'usuario');
             ?>
         </div>
 
