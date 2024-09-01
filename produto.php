@@ -68,7 +68,7 @@ if ($resultado->num_rows > 0) {
 </script>
 
 <body>
-<header style="width: 100%">
+<header>
         <nav class="cabecalhoSuperior">
             <div class="d-flex">
                 <a href="guiaDoLojista.php">Guia do lojista</a>
@@ -101,8 +101,10 @@ if ($resultado->num_rows > 0) {
         </nav>
     </header>
 
-    <!-- Modal de login -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <!----------------------------- Conjunto de modais ----------------------------->
+
+    <!-- Modal de login de usuário -->
+    <div class="modal fade" id="modalLoginUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -110,198 +112,175 @@ if ($resultado->num_rows > 0) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div>
-
-                    </div>
-
-                    <div class="imagensLoginCadastro">
-
-                    </div>
-
-                    <form action="index.php" method="post">
-                        <label for="emailL">E-mail</label><br>
-                        <input type="email" name="email" id="emailL"><br>
-
-                        <label for="senhaL">Senha</label><br>
+                    <form action="#" method="POST" id="formLoginUsuario"
+                        onsubmit="RequisicaoPhpLogin('formLoginUsuario', event)">
+                        <label for="email">E-mail</label>
+                        <input type="email" name="email" id="email">
+                        <label for="senha">Senha</label>
                         <div>
-                            <img class="olho" src="img/img pg padrao/olho.png" alt="icone de olho aberto">
-                            <input type="password" name="senha" id="senhaL">
+                            <img class="olho" src="img/icons/olhofechado.png" alt="icone de olho aberto"
+                                onclick="mostrarSenha(this)">
+                            <input type="password" name="senha" id="senha">
                         </div>
-
-
-                        <a href="">Esqueceu Sua Senha?</a>
-
-                        <br>
-                        <br>
-                        <div id="loginBotao">
-                            <input name="loginSubmit" type="submit" value="Login">
-                        </div>
+                        <span class="aviso"></span>
+                        <a href="#">Esqueceu Sua Senha?</a>
+                        <input type="hidden" name="loginUsuario">
+                        <input type="submit" value="Entrar">
                     </form>
-
                 </div>
                 <div class="modal-footer">
                     <!--Botão pro modal de cadastro-->
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <u>Cadastre-Se</u>
-                    </button>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalLojistaLogin">
-                        <u>Entrar como lojista</u>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalCadastroUsuario">
+                        Não possui conta? <u>Cadastre-Se</u>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal de login -->
-    <!-- Modal de login lojista -->
-    <div class="modal fade" id="modalLojistaLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal de login de usuário -->
+
+    <!-- Modal de login de lojista -->
+    <div class="modal fade" id="modalLoginLojista" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Entrar como lojista</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login lojista</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div>
-
-                    </div>
-
-                    <div class="imagensLoginCadastro">
-                    </div>
-
-                    <form action="index.php" method="post">
-                        <label for="emailL">E-mail</label><br>
-                        <input type="email" name="email" id="emailL"><br>
-
-                        <label for="senhaL">Senha</label><br>
+                    <form action="#" id="formLoginLojista" method="POST"
+                        onsubmit="RequisicaoPhpLogin('formLoginLojista', event)">
+                        <label for="emailL">E-mail</label>
+                        <input type="email" name="email" id="emailL">
+                        <label for="senhaL">Senha</label>
                         <div>
-                            <img class="olho" src="img/img pg padrao/olho.png" alt="icone de olho aberto">
+                            <img class="olho" src="img/icons/olhofechado.png" alt="icone de olho aberto"
+                                onclick="mostrarSenha(this)">
                             <input type="password" name="senha" id="senhaL">
                         </div>
-
-
-                        <a href="">Esqueceu Sua Senha?</a>
-
-                        <br>
-                        <br>
-                        <div id="loginBotao">
-                            <input name="loginLojista" type="submit" value="Login">
-                        </div>
+                        <span class="aviso"></span>
+                        <a href="#">Esqueceu Sua Senha?</a>
+                        <input type="hidden" name="loginLojista">
+                        <span class="aviso"></span>
+                        <input type="submit" value="Entrar">
                     </form>
-
                 </div>
                 <div class="modal-footer">
-                    <!--Botão pro modal de cadastro-->
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalLojistaCadastro">
-                        <u>Cadastre-Se como lojista</u>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalCadastroLojista">
+                        Não possui conta? <u>Cadastre-Se</u>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal de login lojista -->
-    <!-- Modal de cadastro lojista -->
-    <div class="modal fade" id="modalLojistaCadastro" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <!-- Modal de login de lojista -->
+
+    <!-- Modal de cadastro de usuário -->
+    <div class="modal fade" id="modalCadastroUsuario" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastre-se como lojista!</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro usuário</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div>
-                    </div>
+                    <form action="#" method="POST" id="formCadastroUsuario"
+                        onsubmit="RequisicaoPhpCadastro(this, event)" enctype="multipart/form-data">
+                        <label for="nomeC">Nome</label>
+                        <input type="text" name="nome" id="nomeC" class="campoAviso">
 
-                    <div class="imagensLoginCadastro">
-                    </div>
+                        <label for="imagemUsuario" class="imagemLabel campoAviso">
+                            <img src="img/icons/profile.png" alt="Imagem do usuário" id="previewUsuario" class="imagemUsuario">
+                            <button type="button" onclick="adicionarFoto(this)">Adicionar uma foto? (opcional)</button>
+                        </label>
 
-                    <form action="index.php" method="post" enctype="multipart/form-data">
+                        <input type="file" name="imagem" id="imagemUsuario" onchange="PreviewFoto(this, 'previewUsuario')" accept="image/*">
 
-                        <label for="nomeCadastroLojista">Nome</label>
-                        <input type="text" name="nome" id="nomeCadastroLojista">
-                        <label for="nomeEstabelecimento">Nome do seu estabelecimento</label>
-                        <input type="text" name="nomeEstabelecimento" id="nomeEstabelecimento">
-                        <label for="enderecoLojista">Endereço do seu estabelecimento</label>
-                        <input type="text" name="endereco" id="enderecoLojista">
-                        <label for="emailLojista">E-mail</label>
-                        <input type="email" name="email" id="emailLojista">
-                        <label for="telefone">Telefone</label>
-                        <input type="text" name="telefone" id="telefone">
+                        <label for="emailC">E-mail</label>
+                        <input type="email" name="email" id="emailC" class="campoAviso">
 
-                        <label for="imagemLojista">Sua foto</label>
-                        <input type="file" name="imagemUsuario" placeholder="imagem_usuario" accept="image/*"
-                            id="imagemLojista">
-                        <label for="imagemEstabelecimentoLojista">Foto do seu estabelecimento</label>
-                        <input type="file" name="imagemEmpresa" placeholder="imagem_empresa" accept="image/*"
-                            id="imagemEstabelecimentoLojista">
-
-                        <label for="senhaL">Senha</label><br>
-                        <div>
-                            <img class="olho" src="img/img pg padrao/olho.png" alt="icone de olho aberto">
-                            <input type="password" name="senha" id="senhaL">
+                        <label for="senhaC">Senha</label>
+                        <div class="campoAviso">
+                            <img class="olho" src="img/icons/olhofechado.png" alt="icone de olho aberto"
+                                onclick="mostrarSenha(this)">
+                            <input type="password" name="senha" id="senhaC">
                         </div>
-                        <br>
-                        <br>
-                        <div id="loginBotao">
-                            <input name="cadastroLojistaSubmit" type="submit" value="Cadastre-se">
-                        </div>
+
+                        <label for="enderecoC">Endereço</label>
+                        <input type="text" name="endereco" id="enderecoC" class="campoAviso">
+
+                        <label for="dataC">Data de Nascimento</label>
+                        <input type="date" name="data_nascimento" id="dataC" class="campoAviso">
+
+                        <input type="hidden" name="cadastroSubmit">
+                        <input type="submit" value="Cadastre-se">
                     </form>
-
-                </div>
-                <div class="modal-footer">
-
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal de cadastro lojista -->
-    <!-- Modal de cadastro-->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Modal de cadastro de usuário -->
+
+    <!-- Modal de cadastro de lojista -->
+    <div class="modal fade" id="modalCadastroLojista" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Cadastro</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro lojista</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <form action="#" method="POST" id="formCadastroLojista"
+                        onsubmit="RequisicaoPhpCadastro(this, event)" enctype="multipart/form-data">
 
-                    <form action="index.php" method="POST">
-                        <label for="nomeCa">Nome Completo</label><br>
-                        <input type="text" name="nome" id="nomeCa"><br>
+                        <label for="nomeCadastroLojista">Nome</label>
+                        <input type="text" name="nome" id="nomeCadastroLojista" class="campoAviso">
 
-                        <label for="emailC">E-mail</label><br>
-                        <input type="email" name="email" id="emailC"><br>
+                        <label for="nomeEstabelecimento">Nome do seu estabelecimento</label>
+                        <input type="text" name="nomeEstabelecimento" id="nomeEstabelecimento" class="campoAviso">
 
-                        <label for="senhaC">Senha</label><br>
-                        <input type="password" name="senha" id="senhaC"><br>
+                        <label for="enderecoLojista">Endereço do seu estabelecimento</label>
+                        <input type="text" name="endereco" id="enderecoLojista" class="campoAviso">
 
-                        <label for="enderecoC">Endereço</label><br>
-                        <input type="text" name="endereco" id="enderecoC"><br>
+                        <label for="emailLojista">E-mail</label>
+                        <input type="email" name="email" id="emailLojista" class="campoAviso">
 
-                        <label for="dataNcC">Data de Nascimento</label><br>
-                        <input type="date" name="data_nascimento" id="dataNcC"><br>
-                        <br>
-                        <div id="loginBotao">
-                            <input name="cadastroSubmit" type="submit" value="Cadastre-se">
+                        <label for="telefone">Telefone</label>
+                        <input type="text" name="telefone" id="telefone" class="campoAviso" oninput="numeroTelefoneMascara(this)">
+
+                        <label for="imagemLojista" class="campoAviso imagemLabel">
+                            <img src="img/icons/profile.png" alt="Imagem do Lojista" id="previewLojista" class="imagemLojista">
+                            <button type="button" onclick="adicionarFoto(this)">Adicionar sua foto</button>
+                        </label>
+                        <input type="file" name="imagemUsuario" id="imagemLojista" onchange="PreviewFoto(this, 'previewLojista')" accept="image/*">
+
+                        <label for="imagemEmpresa" class="imagemLabel campoAviso">
+                            <img src="img/icons/profile.png" alt="Imagem do Lojista" id="previewEmpresa" class="imagemEmpresa">
+                            <button type="button" onclick="adicionarFoto(this)">Adicionar sua foto</button>
+                        </label>
+                        <input type="file" name="imagemEmpresa" id="imagemEmpresa" onchange="PreviewFoto(this, 'previewEmpresa')" accept="image/*">
+
+
+                        <label for="senhaLojistaCadastro">Senha</label>
+                        <div class="campoAviso">
+                            <img class="olho" src="img/icons/olhofechado.png" alt="icone de olho aberto"
+                                onclick="mostrarSenha(this)">
+                            <input type="password" name="senha" id="senhaLojistaCadastro">
                         </div>
 
+                        <input type="hidden" name="cadastroLojistaSubmit">
+                        <input type="submit" value="Cadastre-se">
                     </form>
-
-                    <div class="modal-footer">
-                        <!--Botão pro modal de login-->
-                        <p>Já Possui Conta?</p>
-
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <u>Logue-se</u>
-                        </button>
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal de cadastro-->
+    <!-- Modal de cadastro de lojista -->
+
+    <!----------------------------- Conjunto de modais ----------------------------->
+
 
 
     <main>
