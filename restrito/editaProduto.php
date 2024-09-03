@@ -2,6 +2,9 @@
 
 include "../validarLojista.php";
 include "conexao.php";
+include "../scripts.php";
+
+$conn = pegarConexao('lojista');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = clear($conn,$_POST['id']);
@@ -33,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bind_param('ssdsi', $nome, $categoria, $preco, $nomeFoto, $id);
 
             if ($stmt->execute()) {
-                echo "Item atualizado com sucesso!";
             } else {
                 echo "Erro ao atualizar o item: " . $conn->error;
             }
@@ -41,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->close();
         }
         $conn->close();
-        header('Location: cadastroProduto.php');
+        header('Location: lojistaLojista.php');
 
 } 
 

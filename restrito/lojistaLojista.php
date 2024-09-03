@@ -232,7 +232,7 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="atualizaLojista.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="idUsuario" value=" <?php echo "$user" ?>">
                         <div class="mb-3">
                             <label for="nomeUsuario" class="form-label">Nome:</label>
@@ -415,27 +415,12 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
 
     <!-- Modal exclui Produto-->
 
-    <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Excluir Produto</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="excluirScript.php" method="post" id="formExcluir" class="">
-                        <h2>Deseja Excluir <b id="nomeProduto"></b>?</h2>
-                        <h2>Deseja Excluir <b id="idProduto"></b>?</h2>
-                        <div class="d-flex">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
-                            <input type="text" name="id" id="idProduto" value="">
-                            <input style="width: 40%;" type="submit" class="btn btn-danger" value="Sim">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <form action="excluirScript.php" method="post" id="formExcluir">
+        <input type="hidden" name="id" id="idProduto" value="1"> <!-- Use um valor fixo para testar -->
+        <input type="submit" value="Excluir">
+    </form>
+
+    
     <!-- Modal exclui Produto-->
 
     <!-- Começo Do Conteúdo-->
@@ -447,7 +432,7 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
 
         <div>
             <h1>Informações e Configurações</h1>
-            <div style="border: 1px solid red" class="containerDasInfoIniciais">
+            <div class="containerDasInfoIniciais">
                 <?php $imagemEstabelecimento ?>
 
                 <div class="d-flex" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -459,34 +444,12 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                     }
                     ?>
                     <br>
-                    <div>
-                        <h3 style='width:120%; padding-left: 20%'><?php echo "$nomeUsuario" ?></h3>
-                    </div>
+                        <h3 ><?php echo "$nomeUsuario" ?></h3>
                 </div>
 
-                <div style="position: absolute; top: 0; right: 0;" class="botoesLojista">
-                    <a style="margin-left: -10%" href="../logout.php">
-                        <svg fill="#000000" height="40px" width="40px" version="1.1" id="Capa_1"
-                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                            viewBox="0 0 384.971 384.971" xml:space="preserve" data-darkreader-inline-fill=""
-                            style="--darkreader-inline-fill: #000000;" transform="matrix(-1, 0, 0, 1, 0, 0)">
-                            <g id="SVGRepo_bgCa#ff0000#ff0000ie#ff0000" st#ff0000oke-width="0"></g>
-                            <g id="SVGRepo_t#ff0000ace#ff0000Ca#ff0000#ff0000ie#ff0000"
-                                st#ff0000oke-linecap="#ff0000ound" st#ff0000oke-linejoin="#ff0000ound"></g>
-                            <g id="SVGRepo_iconCa#ff0000#ff0000ie#ff0000">
-                                <g>
-                                    <g id="Sign_Out">
-                                        <path
-                                            d="M180.455,360.91H24.061V24.061h156.394c6.641,0,12.03-5.39,12.03-12.03s-5.39-12.03-12.03-12.03H12.03 C5.39,0.001,0,5.39,0,12.031V372.94c0,6.641,5.39,12.03,12.03,12.03h168.424c6.641,0,12.03-5.39,12.03-12.03 C192.485,366.299,187.095,360.91,180.455,360.91z">
-                                        </path>
-                                        <path
-                                            d="M381.481,184.088l-83.009-84.2c-4.704-4.752-12.319-4.74-17.011,0c-4.704,4.74-4.704,12.439,0,17.179l62.558,63.46H96.279 c-6.641,0-12.03,5.438-12.03,12.151c0,6.713,5.39,12.151,12.03,12.151h247.74l-62.558,63.46c-4.704,4.752-4.704,12.439,0,17.179 c4.704,4.752,12.319,4.752,17.011,0l82.997-84.2C386.113,196.588,386.161,188.756,381.481,184.088z">
-                                        </path>
-                                    </g>
-                        </svg>
-                    </a>
-                    <a style="margin-left: -10%" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar
-                        <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                <div class="botoesLojista">
+                    <a  data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <svg height="100%" width="40%" version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"
                             enable-background="new 0 0 64 64" xml:space="preserve" fill="#000000"
                             data-darkreader-inline-fill="" style="--darkreader-inline-fill: #000000;">
@@ -538,6 +501,27 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                             </g>
                         </svg>
                     </a>
+                    
+                    <a  href="../logout.php">
+                        <svg fill="#000000" height="100%" width="40%" version="1.1" id="Capa_1"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 384.971 384.971" xml:space="preserve" data-darkreader-inline-fill=""
+                            style="--darkreader-inline-fill: #000000;" transform="matrix(-1, 0, 0, 1, 0, 0)">
+                            <g id="SVGRepo_bgCa#ff0000#ff0000ie#ff0000" st#ff0000oke-width="0"></g>
+                            <g id="SVGRepo_t#ff0000ace#ff0000Ca#ff0000#ff0000ie#ff0000"
+                                st#ff0000oke-linecap="#ff0000ound" st#ff0000oke-linejoin="#ff0000ound"></g>
+                            <g id="SVGRepo_iconCa#ff0000#ff0000ie#ff0000">
+                                <g>
+                                    <g id="Sign_Out">
+                                        <path
+                                            d="M180.455,360.91H24.061V24.061h156.394c6.641,0,12.03-5.39,12.03-12.03s-5.39-12.03-12.03-12.03H12.03 C5.39,0.001,0,5.39,0,12.031V372.94c0,6.641,5.39,12.03,12.03,12.03h168.424c6.641,0,12.03-5.39,12.03-12.03 C192.485,366.299,187.095,360.91,180.455,360.91z">
+                                        </path>
+                                        <path
+                                            d="M381.481,184.088l-83.009-84.2c-4.704-4.752-12.319-4.74-17.011,0c-4.704,4.74-4.704,12.439,0,17.179l62.558,63.46H96.279 c-6.641,0-12.03,5.438-12.03,12.151c0,6.713,5.39,12.151,12.03,12.151h247.74l-62.558,63.46c-4.704,4.752-4.704,12.439,0,17.179 c4.704,4.752,12.319,4.752,17.011,0l82.997-84.2C386.113,196.588,386.161,188.756,381.481,184.088z">
+                                        </path>
+                                    </g>
+                        </svg>
+                    </a>
                 </div>
 
 
@@ -549,9 +533,9 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
             <div class="contatoInfo">
                 <h2>Contatos</h2>
                 <h5><?php echo "$emailUsuario" ?></h5>
-                <a class="contatoWhats btn-p3"
+                <a class="contatoWhats"
                     href="https://api.whatsapp.com/send/?phone=55<?php echo "$telefone" ?>&text&type=phone_number&app_absent=0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4693ce" class="bi bi-whatsapp"
+                    <svg xmlns="http://www.w3.org/2000/svg"  fill="#4693ce" class="bi bi-whatsapp"
                         viewBox="0 0 16 16">
                         <path
                             d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
@@ -574,7 +558,6 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
             </div>
 
         </div>
-
 
         <h1 class="produtos">Seus Produtos</h1>
     </main>
@@ -669,10 +652,10 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                 var id = button.getAttribute('data-id');
                 var nome = button.getAttribute('data-nome');
                 document.getElementById('idProduto').value = id;
-                document.getElementById('idProduto').innerText = id;
                 document.getElementById('nomeProduto').innerText = nome;
             });
-        });
+});
+
 
         // Script para aparecer as informacoes na edição
         var buttonsEditar = document.querySelectorAll('.editar');

@@ -1,7 +1,9 @@
 <?php
 
 include "../validarLojista.php";
+include "../scripts.php";
 include "conexao.php";
+$conn = pegarConexao('lojista');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = clear($conn, $_POST['idUsuario']);
@@ -47,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Atualizar a imagem do usuário, se houver
     if (!empty($nomeFoto)) {
         // Buscar a imagem antiga do usuário no banco de dados
-        $sqlBuscaImagemUsuario = "SELECT imagem_usuario FROM lojistas WHERE id = ?";
+        $sqlBuscaImagemUsuario = "SELECT imagem_lojista FROM lojistas WHERE id = ?";
         $stmtBuscaImagemUsuario = $conn->prepare($sqlBuscaImagemUsuario);
         $stmtBuscaImagemUsuario->bind_param('i', $id);
         $stmtBuscaImagemUsuario->execute();
@@ -61,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Atualizar o registro com a nova imagem do usuário
-        $sqlUpdateUsuario = "UPDATE lojistas SET nome=?, nome_estabelecimento=?, endereco=?, email=?, telefone=?, imagem_usuario=? WHERE id=?";
+        $sqlUpdateUsuario = "UPDATE lojistas SET nome=?, nome_estabelecimento=?, endereco=?, email=?, telefone=?, imagem_lojista=? WHERE id=?";
         $stmtUpdateUsuario = $conn->prepare($sqlUpdateUsuario);
         $stmtUpdateUsuario->bind_param('ssssssi', $nome, $nomeEstabelecimento, $enderecoUsuario, $emailUsuario, $telefoneLojista, $nomeFoto, $id);
         $stmtUpdateUsuario->execute();

@@ -92,6 +92,12 @@ main .containerDasInfoIniciais {
   justify-content: space-between;
 }
 
+.containerDasInfoIniciais .d-flex h3{
+margin-left: 10%;
+flex-wrap: nowrap;
+white-space: nowrap;
+}
+
 main .containerDasInfoIniciais img {
   width: 180px;
   height: 180px;
@@ -108,6 +114,36 @@ main .containerDasInfoIniciais img:hover {
   border-color: #f4cb00;
 }
 
+main .containerDasInfoIniciais .botoesLojista{
+  height: 20%;
+  width: 10%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+} 
+
+.containerDasInfoIniciais .botoesLojista a{
+display: flex;
+flex-direction: column;
+justify-content: end !important;
+align-items: center;
+height: 60%;
+cursor: pointer;
+transition: 0.25s;
+} 
+
+.containerDasInfoIniciais .botoesLojista a:hover{
+transform: scale(1.15);
+} 
+
+.containerDasInfoIniciais .botoesLojista a svg{
+width: 100%;
+height: 100%;
+} 
+
 .containerDasInfoIniciais .d-flex .textos {
   display: flex;
   flex-direction: column;
@@ -120,58 +156,11 @@ main .containerDasInfoIniciais img:hover {
   word-break: break-word;
 }
 
-main .containerDasInfoIniciais a {
-  position: absolute;
-  right: 4%;
-  margin-top: 20%;
-  font-size: 0.55rem;
-  transition: 0.25s;
-  transform: scale(0.8);
-}
-
 main .containerDasInfoIniciais a:hover {
   transform: scale(0.9);
   transition: 0.25s;
 }
 
-main .containerDasInfoIniciais .editar {
-  display: flex;
-  align-items: center !important;
-  width: 100px;
-  height: 40px;
-  cursor: pointer;
-  transition: 0.25s;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 2%;
-  padding: 1%;
-  background-color: var(--cor0);
-  border-radius: 10px;
-}
-main .containerDasInfoIniciais .editar img {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border: none;
-  border-radius: 0;
-  transform: rotate(-10deg);
-  filter: invert(1);
-  left: 10%;
-}
-
-.editar p {
-  left: 40%;
-  bottom: -20%;
-  position: absolute;
-  font-size: 1.1rem;
-  color: white;
-}
-
-.editar:hover {
-  transform: scale(1.03);
-  transition: 0.25s;
-}
 
 
 main .localizacaoContato{
@@ -210,19 +199,22 @@ main .localizacaoContato{
   border-radius: 10px;
 }
 
-main .localizacaoContato .btn-p3:hover{
-  background-color: white;
-  color: var(--cor2);
-  transform: scale(1.07);
-  transition: 0.25s;
-  border: 1px solid #0732f1 !important;
-}
-
 .contatoWhats{
   display: flex;
   justify-content: center;
   align-items: center;
   text-decoration: none;
+  color: var(--cor2);
+  background-color: #4ba6e24d;
+  border-radius: 6px;
+  padding: 3% 5%;
+  white-space: nowrap;
+  transition: 0.25s;
+}
+
+main .localizacaoContato .contatoWhats:hover{
+  transform: scale(1.07);
+  border: 1px solid #0732f1 !important;
 }
 
 .contatoWhats h3{
@@ -411,26 +403,7 @@ main .localizacaoContato .btn-p3:hover{
     width: 100px !important; /*Alterar para responsividade*/
   }
 
-  main .containerDasInfoIniciais .botoesLojista{
-    position: absolute;
-    top: 0;
-    font-size: 0.55rem;
-    transition: 0.25s;
-    transform: scale(0.8);
 
-  }
-  
-  main .containerDasInfoIniciais .botoesLojista a:hover {
-    transform: scale(0.9);
-    transition: 0.25s;
-  }
-
-  main .containerDasInfoIniciais .btnEdita a{
-    font-size: 0.55rem;
-    transition: 0.25s;
-    transform: scale(0.8);
-    text-decoration: none;
-  }
 
 
   main h1:nth-child(2) {
