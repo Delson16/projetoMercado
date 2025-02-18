@@ -86,7 +86,8 @@ function reduzTexto() {
     })
 
 }
-reduzTexto()function favorita() {
+reduzTexto(); 
+function favorita() {
     let coracoes = document.querySelectorAll('.favoritaCoracao');
 
     coracoes.forEach(coracao => {
@@ -174,7 +175,8 @@ function reduzTexto() {
     })
 
 }
-reduzTexto()function favorita() {
+reduzTexto();
+function favorita() {
     let coracoes = document.querySelectorAll('.favoritaCoracao');
 
     coracoes.forEach(coracao => {

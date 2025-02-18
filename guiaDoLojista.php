@@ -26,6 +26,10 @@
     <title>Mercazon</title>
 </head>
 
+<?php
+    include "scripts.php";
+?>
+
 
 <!--PHP Login e cadastro-->
 <?php

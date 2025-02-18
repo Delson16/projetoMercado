@@ -128,38 +128,29 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
 <body>
 
 
-    <header>
+<header>
         <nav class="cabecalhoSuperior">
             <div class="d-flex">
-                <a href="../guiaDoLojista.php">Guia do lojista</a>
+                <a href="guiaDoLojista.php">Guia do lojista</a>
                 <h9>|</h9>
-                <a href="../Contato.php">Suporte</a>
+                <a href="Contato.php">Suporte</a>
             </div>
         </nav>
 
         <nav class="cabecalhoInferior">
-            <a href="../index.php">
-                <img src="../img/img pg inicial/logoAmareloEscuro.png" alt="" data-aos="zoom-in">
+            <a class="logoMercazon" href="../index.php">
+                <img src="../img/icons/logoAmareloEscuro.png" alt="Logo Mercazon" data-aos="zoom-in">
             </a>
 
-            <form action="../produtosBusca.php" class="pesquisaCentral" method="POST">
-                <input type="text" placeholder="Busque Seus Produtos" name="nome">
-                <button type="submit" name="filtro" value="preco"><img src="../img/img pg padrao/lupa.png"
-                        alt=""></button>
+            <form action="produtosBusca.php" class="filtroNome pesquisaCentral" method="POST" >
+                <input type="text" placeholder="Busque Seus Produtos" name="nome" >
+                <button type="submit" name="filtro" value="preco"><img src="../img/icons/lupa.png" alt="Lupa de pesquisa"></button>
             </form>
 
 
-            <div class="d-flex">
-                <?php if (isset($_SESSION['idUser'])) {
-                    include_once "conexao.php";
-                    $id = $_SESSION['idUser'];
-                    $sql = "SELECT imagem_usuario FROM usuarios WHERE id = $id;";
-                    $resultado = $conn->query($sql);
-                    $linha = mysqli_fetch_assoc($resultado);
-                    $imagemLogin = $linha['imagem_usuario'] ? ('../img/' . $linha['imagem_usuario']) : "../imgs/profile.png";
 
-                    echo "<a href='usuario.php'> <img src='$imagemLogin' class='loginButton' data-bs-toggle='modal'> </a>";
-                } else if (isset($_SESSION['idLojista'])) {
+            <div class="d-flex">
+            <?php if (isset($_SESSION['idLojista'])) {
                     include_once "conexao.php";
                     $id = $_SESSION['idLojista'];
                     $sql = "SELECT imagem_lojista FROM lojistas WHERE id = $id;";
@@ -168,59 +159,18 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                     $imagemLogin = $linha['imagem_lojista'] ? ('../img/' . $linha['imagem_lojista']) : "../imgs/profile.png";
 
                     echo "<a href='lojistaLojista.php'> <img src='$imagemLogin' class='loginButton' data-bs-toggle='modal'> </a>";
-
-                } else {
-                    echo "<img src='../imgs/profile.png' class='loginButton' data-bs-toggle='modal'
-                    data-bs-target='#exampleModal' style='filter: invert(1);'>";
-                } ?>
-
+                }
+            ?>
                 <div class="dropdown">
-                    <div src="" alt="" class="naoClicado" id="favoritos" data-bs-toggle="dropdown"
-                        aria-expanded="false"></div>
+                    <div aria-label="Adicionar aos favoritos" role="button" src="" alt="Coração de favoritos"
+                        class="naoClicado" id="favoritos" data-bs-toggle="dropdown" aria-expanded="false"></div>
                     <ul class="dropdown-menu">
-
-                        <?php
-
-                        if (isset($_SESSION['idUser'])) {
-                            // Consulta SQl para aparecer os elementos favoritos no header
-                            $sqlElementosFavoritosHeader = "SELECT p.id, p.nome, p.preco, p.categoria, p.imagem 
-                                                        FROM produtos AS p
-                                                        JOIN usuario_favorita_produto AS ufp ON p.id = ufp.id_produto
-                                                        WHERE ufp.id_usuario = $user
-                                                        ORDER BY ufp.id DESC
-                                                        LIMIT 3;
-                                                        ";
-                            $resultado = $conn->query($sqlElementosFavoritosHeader);
-
-                            while ($linha = mysqli_fetch_assoc($resultado)) {
-                                $nome = $linha['nome'];
-                                $imagem = $linha['imagem'];
-                                $preco = $linha['preco'];
-                                $categoria = $linha['categoria'];
-                                $id = $linha['id'];
-
-                                echo "
-                                    <li class='produtosNoHeader'><a href='../produto.php?id=$id' class='dropdown-item d-flex'> 
-                                    <img src='../img/$imagem' alt='$nome'>
-                                    <div class= 'd-flex flex-column justify-content-center'>
-                                    <h6>$nome</h6>
-                                    <h6>R$ $preco</h6>
-                                    </div>
-                                    </a></li>
-                                    ";
-                            }
-                            echo "<li><a class='dropdown-item' href='usuario.php'>Ver Todos</a></li>";
-                        } else {
-                            echo "<li data-bs-toggle='modal'
-                    data-bs-target='#exampleModal'><a class='dropdown-item' style='cursor: pointer !important;'>Logue-se para ver os favoritos</a></li>";
-                        }
-                        ?>
+                        <?php dropdownHeader() ?>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-
     <!-- Modal de Edita lojista -->
 
 
@@ -311,18 +261,18 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                         <div class="mb-3">
                             <label for="categoria" class="form-label">Categoria:</label>
                             <select class="form-select" id="categoria" name="categoria" required>
-                                <option value="eletrônico">Eletrônicos</option>
-                                <option value="roupa">Roupas</option>
-                                <option value="eletrodoméstico">Eletrodomésticos</option>
-                                <option value="cosmético">Cosméticos</option>
-                                <option value="lanche">Lanches</option>
-                                <option value="doce">Doces</option>
-                                <option value="brinquedo">Brinquedos</option>
+                                <option value="eletrônico">Eletrônico</option>
+                                <option value="roupa">Roupa</option>
+                                <option value="eletrodoméstico">Eletrodoméstico</option>
+                                <option value="estetica">Estética</option>
+                                <option value="lanche">Lanche</option>
+                                <option value="doce">Doce</option>
+                                <option value="pet">Pet</option>
+                                <option value="brinquedo">Brinquedo</option>
                                 <option value="servico">Serviço</option>
-                                <option value="jogo">Jogos</option>
-                                <option value="utensílio">Utensílios</option>
-                                <option value="acessório">Acessórios</option>
-                                <option value="calçado">Calçados</option>
+                                <option value="movel">Móvel</option>
+                                <option value="papelaria">Papelaria</option>
+                                <option value="movel">Móvel</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -359,8 +309,6 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
 
     <!-- Modal de edição de produto -->
 
-    <!-- Modal de edição de produto -->
-
     <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -383,6 +331,7 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                                 <option value="Eletronicos">Eletrônicos</option>
                                 <option value="Roupas">Roupas</option>
                                 <option value="Eletrodomesticos">Eletrodomésticos</option>
+                                <option value="Pet">Pet</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -408,8 +357,6 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
             </div>
         </div>
     </div>
-
-    <!-- Modal de edição de produto -->
 
     <!-- Modal de edição de produto -->
 
@@ -444,7 +391,10 @@ while ($linhaUsuario = mysqli_fetch_assoc($infoUsuarioResultado)) {
                     }
                     ?>
                     <br>
-                        <h3 ><?php echo "$nomeUsuario" ?></h3>
+                    <div>
+                        <h3><?php echo "$nomeUsuario" ?></h3>
+                        <h3><?php echo "$nomeEstabelecimento" ?></h3>
+                    </div>
                 </div>
 
                 <div class="botoesLojista">

@@ -25,6 +25,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mercazon</title>
 </head>
+<?php
+include "scripts.php";
+?>
+
 <!--PHP Login e cadastro-->
 <?php
 session_start();

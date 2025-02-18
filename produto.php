@@ -299,10 +299,10 @@ if ($resultado->num_rows > 0) {
                 <div>
                     <h1><?php echo "$nome" ?></h1>
                     <p>Categoria: <?php echo "$categoria" ?></p>
-                    <p>Marca: Arno</p>
+                    <?php if($marca) echo"<p>Marca: $marca</p>"; else ?>
                     <p>Condição: <?php echo "$descricao" ?></p>
-                    <p>Tipo: Ferros de Passar</p>
-                    <p>Voltagem: 127v</p>
+                    <?php if($cor) echo"<p>Cor: $cor</p>" ?>
+                    <?php if($genero) echo"<p>Genêro: $genero</p>" ?>
                     <h2><?php echo "R$ $preco" ?></h2>
                 </div>
                 <div class="botoesInteresse">
@@ -421,9 +421,9 @@ if ($resultado->num_rows > 0) {
         <div class="containerCards" style="padding: 0%;">
             <?php
             $conn = pegarConexao('usuario');
-            $query = "SELECT * FROM produtos WHERE categoria = 'eletrônico'";
-            $result = $conn->query($query);
-            gerarCard($query, 'usuario');
+            $sql = "SELECT p.id, p.contador_cliques, p.nome, p.preco, p.imagem, l.nome_estabelecimento
+            FROM produtos AS p JOIN lojistas as l ON p.id_lojista = l.id WHERE categoria = '$categoria' ORDER BY contador_cliques DESC LIMIT 8;";
+            gerarCard($sql, 'usuario');
              ?>
                     
         </div>

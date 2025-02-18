@@ -333,3 +333,4 @@ function PreviewFoto(inputFile, imgPreview) {
     }
     reader.readAsDataURL(inputImagem.files[0]);
 }
+

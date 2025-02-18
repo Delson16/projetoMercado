@@ -286,7 +286,6 @@ function gerarCard($querrySql, $tipoUsuario)
                     <input type='hidden' name='nomeProduto' data-nome='$nome'>
                     <input type='hidden' name='nomeCategoria' data-nome='$nome'>
                     <input type='hidden' name='nomeProduto' data-nome='$nome'>
-                    <input type='hidden' name='nomeProduto' data-nome='$nome'>
 
                     <form action='excluirScript.php' method='post' style='display:inline;' onsubmit='return confirm(\"Deseja excluir o produto $nome?\");'>
                         <input type='hidden' name='id' value='$id'>
@@ -389,6 +388,7 @@ function gerarCard($querrySql, $tipoUsuario)
                 $nome = $linha['nome'];
                 $imagem = $linha['imagem'];
                 $preco = $linha['preco'];
+                $nome_estabelecimento = $linha['nome_estabelecimento'];
                 $id = $linha['id'];
 
 
@@ -434,6 +434,7 @@ function gerarCard($querrySql, $tipoUsuario)
                     </div>
                     <div class='parteInferiorCard'>
                         <h4>$nome</h4>
+                        <h6>$nome_estabelecimento</h6>
                         <h6>R$ $preco</h6>
                         <a class='btn-p4' href=''>Ver Produto</a>
                     </div>
